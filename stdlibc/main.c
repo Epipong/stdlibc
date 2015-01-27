@@ -45,19 +45,40 @@ static void	string_test()
   free(s);
 }
 
+static bool	list_compare_int(const value_type a, const value_type b)
+{
+  return (*((int *)a) > *((int *)b));
+}
+
 static void	list_test()
 {
   list		mylist;
-  int		val = 10;
+  int		val[] = {5, 32, 14, 77, 53, 41, 21};
+  int		i;
+  iterator	it;
 
   std.list->constructor(&mylist);
-  std.list->push_back(&mylist, &val);
-  std.list->resize(&mylist, 10);
-  printf("size: %zu\n", std.list->size(&mylist));
-  printf("content: %d\n", *((int *)std.list->front(&mylist)));
-  std.list->resize(&mylist, 5);
-  printf("size: %zu\n", std.list->size(&mylist));
-  printf("content: %d\n", *((int *)std.list->front(&mylist)));
+
+// put values in list and dump
+  for (i = 0; i < 7; ++i)
+  {
+    printf("%d ", val[i]);
+    std.list->push_back(&mylist, &(val[i]));
+  }
+  printf("\n");
+
+// sort my list with: a > b compare method
+  std.list->sort(&mylist, &list_compare_int);
+
+// dump my list
+  it = std.list->begin(&mylist);
+  while (!std.list->empty(&mylist))
+  {
+    printf("%d ", *((int *)std.list->front(&mylist)));
+    std.list->pop_front(&mylist);
+  }  
+  printf("\n");
+
   std.list->destructor(&mylist);
 }
 
@@ -80,7 +101,7 @@ static void	deque_test()
 int		main(/*int argc, char const *argv[]*/)
 {
   /* string_test(); */
-  /* list_test(); */
-  deque_test();
+  list_test();
+  /* deque_test(); */
   return (EXIT_SUCCESS);
 }

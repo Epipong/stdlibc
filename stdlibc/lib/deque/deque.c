@@ -132,6 +132,15 @@ static void		*back(deque *this)
 
 static void		assign(deque *this, InputIterator first, InputIterator last)
 {
+  iterator		it;
+
+  g_deque.clear(this);
+  it = first;
+  while (it != NULL && it != last)
+  {
+    g_deque.push_back(this, it->value);
+    it = it->forward;
+  }
 }
 
 static void		push_back(deque *this, const value_type val)

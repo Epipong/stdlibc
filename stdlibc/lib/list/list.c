@@ -44,7 +44,7 @@ static iterator		end(list *this)
 
 static bool		empty(list *this)
 {
-  return (this == NULL || this->content == NULL);
+  return (!this || !this->content || !this->content->value);
 }
 
 static size_type	size(list *this)
@@ -85,6 +85,15 @@ static void		*back(list *this)
 
 static void		assign(list *this, iterator first, iterator last)
 {
+  iterator		it;
+
+  g_list.clear(this);
+  it = first;
+  while (it != NULL && it != last)
+  {
+    g_list.push_back(this, it->value);
+    it = it->forward;
+  }
 }
 
 static void		push_front(list *this, const value_type val)
@@ -257,10 +266,26 @@ static void		splice(list *this, iterator position, list *x)
 
 static void		remove(list *this, const value_type val)
 {
+  iterator		it;
+
+  it = g_list.begin(this);
+  while (it != NULL && it->value != val)
+    it = it->value;
+  if (it != NULL)
+    g_list.erase(this, it);
 }
 
 static void		remove_if(list *this, Predicate pred)
 {
+  iterator		it;
+
+  it = g_list.begin(this);
+  while (it != NULL)
+  {
+    if (pred(it != NULL ? it->value : NULL))
+      g_list.erase(this, it);
+    it = it->forward;
+  }
 }
 
 static void		unique(list *this)
@@ -273,10 +298,30 @@ static void		merge(list *this, list *x)
 
 static void		sort(list *this, Compare comp)
 {
+  iterator		it;
+  iterator		tmp;
+
+  it = g_list.begin(this);
+  while (it != NULL)
+  {
+    tmp = it->forward;
+    while (tmp != NULL)
+    {
+      if (comp(it->value, tmp->value))
+      {
+	it->value = (void *)((size_t)(it->value) ^ (size_t)(tmp->value));
+	tmp->value = (void *)((size_t)(tmp->value) ^ (size_t)(it->value));
+	it->value = (void *)((size_t)(it->value) ^ (size_t)(tmp->value));
+      }
+      tmp = tmp->forward;
+    }
+    it = it->forward;
+  }
 }
 
 static void		reverse(list *this)
 {
+
 }
 
 struct s_list_class	g_list = {

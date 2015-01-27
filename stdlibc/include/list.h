@@ -6,8 +6,8 @@
 # include "iterator.h"
 
 typedef struct s_list	list;
-typedef bool (*Predicate)(const int);
-typedef bool (*Compare)(void *, void *);
+typedef bool (*Predicate)(const value_type val);
+typedef bool (*Compare)(const value_type a, const value_type b);
 
 struct		s_list
 {
