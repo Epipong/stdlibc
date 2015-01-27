@@ -1,4 +1,4 @@
-SOURCES		=	source/std.c \
+SOURCES		=	lib/std.c \
 			lib/string/string.c \
 			lib/list/list.c \
 			lib/deque/deque.c
