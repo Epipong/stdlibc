@@ -11,6 +11,8 @@
 #include <string.h>
 #include "deque.h"
 
+static int const	g_default_val = 0;
+
 static void		constructor(deque *this)
 {
   if (this != NULL)
@@ -72,7 +74,26 @@ static size_type	max_size(deque *this)
 
 static void		resize(deque *this, size_type n)
 {
+  size_type		i;
 
+  if ((i = g_deque.size(this)) == n)
+    return ;
+  else if (i < n)
+  {
+    while (i < n)
+    {
+      g_deque.push_back(this, (void *)(&g_default_val));
+      ++i;
+    }
+  }
+  else
+  {
+    while (i > n)
+    {
+      g_deque.pop_back(this);
+      --i;
+    }
+  }
 }
 
 static bool		empty(deque *this)
@@ -111,7 +132,6 @@ static void		*back(deque *this)
 
 static void		assign(deque *this, InputIterator first, InputIterator last)
 {
-
 }
 
 static void		push_back(deque *this, const value_type val)
@@ -204,9 +224,23 @@ static iterator		insert(deque *this, iterator position, const value_type val)
   return (NULL);
 }
 
-static iterator		erase(deque *this, iterator first, iterator last)
+static iterator		erase(deque *this, iterator position)
 {
-  return (NULL);
+  iterator		it;
+  iterator		tmp;
+
+  it = g_deque.begin(this);
+  while (it != NULL && it != position)
+    it = it->forward;
+  if (it != position)
+    return (NULL);
+  tmp = it->forward;
+  if (it->rewind != NULL)
+    it->rewind->forward = it->forward;
+  if (it->forward != NULL)
+    it->forward->rewind = it->rewind;
+  free(it);
+  return (tmp);
 }
 
 static void		swap(deque *this, deque *x)

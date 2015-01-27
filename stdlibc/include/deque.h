@@ -46,7 +46,7 @@ struct		s_deque_class
   void		(*pop_back)(deque *this);
   void		(*pop_front)(deque *this);
   iterator	(*insert)(deque *this, iterator position, const value_type val);
-  iterator	(*erase)(deque *this, iterator first, iterator last);
+  iterator	(*erase)(deque *this, iterator position);
   void		(*swap)(deque *this, deque *x);
   void		(*clear)(deque *this);
 };

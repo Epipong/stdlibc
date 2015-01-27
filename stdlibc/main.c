@@ -49,31 +49,38 @@ static void	list_test()
 {
   list		mylist;
   int		val = 10;
-  /* string	str; */
 
   std.list->constructor(&mylist);
   std.list->push_back(&mylist, &val);
-  /* std.string->constructor(&str, "little pony: battle for ponyland"); */
-
   std.list->resize(&mylist, 10);
   printf("size: %zu\n", std.list->size(&mylist));
   printf("content: %d\n", *((int *)std.list->front(&mylist)));
-
   std.list->resize(&mylist, 5);
   printf("size: %zu\n", std.list->size(&mylist));
   printf("content: %d\n", *((int *)std.list->front(&mylist)));
-
-
-  /* std.list->push_back(&mylist, &str); */
-  /* printf("%s\n", std.string->c_str(std.list->back(&mylist))); */
-
   std.list->destructor(&mylist);
-  /* std.string->destructor(&str); */
+}
+
+static void	deque_test()
+{
+  deque		mydeque;
+  int		val = 10;
+
+  std.deque->constructor(&mydeque);
+  std.deque->push_back(&mydeque, &val);
+  std.deque->resize(&mydeque, 10);
+  printf("size: %zu\n", std.deque->size(&mydeque));
+  printf("content: %d\n", *((int *)std.deque->front(&mydeque)));
+  std.deque->resize(&mydeque, 5);
+  printf("size: %zu\n", std.deque->size(&mydeque));
+  printf("content: %d\n", *((int *)std.deque->front(&mydeque)));
+  std.deque->destructor(&mydeque);
 }
 
 int		main(/*int argc, char const *argv[]*/)
 {
   /* string_test(); */
-  list_test();
+  /* list_test(); */
+  deque_test();
   return (EXIT_SUCCESS);
 }
