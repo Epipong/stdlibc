@@ -48,19 +48,30 @@ static void	string_test()
 static void	list_test()
 {
   list		mylist;
-  string	str;
+  int		val = 10;
+  /* string	str; */
 
   std.list->constructor(&mylist);
-  std.string->constructor(&str, "little pony: battle for ponyland");
+  std.list->push_back(&mylist, &val);
+  /* std.string->constructor(&str, "little pony: battle for ponyland"); */
 
-  std.list->push_back(&mylist, &str);
-  printf("%s\n", std.string->c_str(std.list->back(&mylist)));
+  std.list->resize(&mylist, 10);
+  printf("size: %zu\n", std.list->size(&mylist));
+  printf("content: %d\n", *((int *)std.list->front(&mylist)));
+
+  std.list->resize(&mylist, 5);
+  printf("size: %zu\n", std.list->size(&mylist));
+  printf("content: %d\n", *((int *)std.list->front(&mylist)));
+
+
+  /* std.list->push_back(&mylist, &str); */
+  /* printf("%s\n", std.string->c_str(std.list->back(&mylist))); */
 
   std.list->destructor(&mylist);
-  std.string->destructor(&str);
+  /* std.string->destructor(&str); */
 }
 
-int		main(int argc, char const *argv[])
+int		main(/*int argc, char const *argv[]*/)
 {
   /* string_test(); */
   list_test();

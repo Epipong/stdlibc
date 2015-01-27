@@ -1,6 +1,8 @@
 #include <string.h>
 #include "list.h"
 
+static int const	g_default_val = 0;
+
 static void		constructor(list *this)
 {
   if (this != NULL)
@@ -122,11 +124,11 @@ static void		pop_front(list *this)
 static void		push_back(list *this, const value_type val)
 {
   iterator		it;
-  iterator		tmp;
+  iterator		end;
 
-  if (g_list.end(this)->value == NULL)
+  if ((end = g_list.end(this)) != NULL && end->value == NULL)
   {
-    g_list.end(this)->value = val;
+    end->value = val;
     return ;
   }
   if ((it = calloc(sizeof(*it), 1)) == NULL)
@@ -134,11 +136,13 @@ static void		push_back(list *this, const value_type val)
   it->value = val;
   it->rewind = NULL;
   it->forward = NULL;
-  if ((tmp = g_list.end(this)) != NULL)
+  if (end != NULL)
   {
-    tmp->forward = it;
-    it->rewind = tmp;
+    end->forward = it;
+    it->rewind = end;
   }
+  else
+    this->content = it;
 }
 
 static void		pop_back(list *this)
@@ -156,28 +160,42 @@ static void		pop_back(list *this)
 
 static iterator		insert(list *this, iterator position, const value_type val)
 {
+  iterator		elem;
   iterator		it;
-  iterator		tmp;
 
-  if ((it = calloc(sizeof(*it), 1)) == NULL)
+  if ((elem = calloc(sizeof(*elem), 1)) == NULL)
     exit(EXIT_FAILURE);
-  it->value = val;
-  it->rewind = NULL;
-  it->forward = NULL;
-  tmp = g_list.begin(this);
-  while (tmp != NULL && tmp->forward != NULL && tmp != position)
-    tmp = tmp->forward;
-  it->forward = tmp->forward;
-  it->rewind = tmp;
-  if (tmp->forward != NULL)
-    tmp->forward->rewind = it;
-  tmp->forward = it;
+  elem->value = val;
+  elem->rewind = NULL;
+  elem->forward = NULL;
+  it = g_list.begin(this);
+  while (it != NULL && it->forward != NULL && it != position)
+    it = it->forward;
+  elem->forward = it->forward;
+  elem->rewind = it;
+  if (it->forward != NULL)
+    it->forward->rewind = elem;
+  it->forward = elem;
   return (NULL);
 }
 
 static iterator		erase(list *this, iterator position)
 {
-  return (NULL);
+  iterator		it;
+  iterator		tmp;
+
+  it = g_list.begin(this);
+  while (it != NULL && it != position)
+    it = it->forward;
+  if (it != position)
+    return (NULL);
+  tmp = it->forward;
+  if (it->rewind != NULL)
+    it->rewind->forward = it->forward;
+  if (it->forward != NULL)
+    it->forward->rewind = it->rewind;
+  free(it);
+  return (tmp);
 }
 
 static void		swap(list *this, list *x)
@@ -189,6 +207,26 @@ static void		swap(list *this, list *x)
 
 static void		resize(list *this, size_type n)
 {
+  size_type		i;
+
+  if ((i = g_list.size(this)) == n)
+    return ;
+  else if (i < n)
+  {
+    while (i < n)
+    {
+      g_list.push_back(this, (void *)(&g_default_val));
+      ++i;
+    }
+  }
+  else
+  {
+    while (i > n)
+    {
+      g_list.pop_back(this);
+      --i;
+    }
+  }
 }
 
 static void		clear(list *this)
