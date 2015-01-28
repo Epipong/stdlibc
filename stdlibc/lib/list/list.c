@@ -262,6 +262,25 @@ static void		clear(list *this)
 
 static void		splice(list *this, iterator position, list *x)
 {
+  iterator		it;
+  iterator		tmp;
+
+  if (x == NULL || x->content == NULL)
+    return ;
+  it = g_list.begin(this);
+  while (it != NULL && it->forward != position)
+    it = it->forward;
+  if (it == NULL)
+    return ;
+  tmp = it->forward;
+  it->forward = x->content;
+  x->content->rewind = it;
+  it = g_list.end(x);
+  if (tmp != NULL)
+    tmp->rewind = it;
+  if (it != NULL)
+    it->forward = tmp;
+  x->content = NULL;
 }
 
 static void		remove(list *this, const value_type val)
@@ -288,8 +307,22 @@ static void		remove_if(list *this, Predicate pred)
   }
 }
 
-static void		unique(list *this)
+static void		unique(list *this, BinaryPredicate binary_pred)
 {
+  iterator		it;
+  iterator		tmp;
+
+  it = g_list.begin(this);
+  while (it != NULL)
+  {
+    tmp = it->forward;
+    while (tmp != NULL)
+    {
+      tmp = binary_pred(it->value, tmp->value) ? 
+	g_list.erase(this, tmp) : tmp->forward;
+    }
+    it = it->forward;
+  }
 }
 
 static void		merge(list *this, list *x)

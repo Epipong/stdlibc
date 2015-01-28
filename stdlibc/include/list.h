@@ -8,6 +8,7 @@
 typedef struct s_list	list;
 typedef bool (*Predicate)(const value_type val);
 typedef bool (*Compare)(const value_type a, const value_type b);
+typedef bool (*BinaryPredicate)(const value_type a, const value_type b);
 
 struct		s_list
 {
@@ -44,7 +45,7 @@ struct s_list_class
   void		(*splice)(list *this, iterator position, list *x);
   void		(*remove)(list *this, const value_type val);
   void		(*remove_if)(list *this, Predicate pred);
-  void		(*unique)(list *this);
+  void		(*unique)(list *this, BinaryPredicate binary_pred);
   void		(*merge)(list *this, list *x);
   void		(*sort)(list *this, Compare comp);
   void		(*reverse)(list *this);
