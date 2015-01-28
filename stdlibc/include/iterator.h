@@ -1,11 +1,9 @@
 #ifndef ITERATOR_H_
 # define ITERATOR_H_
 
+# include "bits/helper.h"
+
 typedef struct s_iterator *	iterator;
-typedef void *			InputIterator;
-typedef void *			pointer;
-typedef void *			value_type;
-typedef size_t			size_type;
 
 struct		s_iterator
 {

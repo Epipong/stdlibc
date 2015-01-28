@@ -1,7 +1,8 @@
 SOURCES		=	lib/std.c \
 			lib/string/string.c \
 			lib/list/list.c \
-			lib/deque/deque.c
+			lib/deque/deque.c \
+			lib/map/map.c
 
 OBJECTS		=	$(SOURCES:.c=.o)
 

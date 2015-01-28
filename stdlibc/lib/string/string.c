@@ -27,8 +27,7 @@ static void		*begin(string *this)
 
 static void		*end(string *this)
 {
-  return (this->str != NULL ? 
-	  this->str + strlen(this->str) : NULL);
+  return (this->str != NULL ? this->str + strlen(this->str) : NULL);
 }
 
 static size_t		size(string *this)

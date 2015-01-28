@@ -1,14 +1,11 @@
 #ifndef LIST_H_
 # define LIST_H_
 
-# include <stdlib.h>
-# include <stdbool.h>
+# include "std.h"
 # include "iterator.h"
+# include "bits/helper.h"
 
 typedef struct s_list	list;
-typedef bool (*Predicate)(const value_type val);
-typedef bool (*Compare)(const value_type a, const value_type b);
-typedef bool (*BinaryPredicate)(const value_type a, const value_type b);
 
 struct		s_list
 {
