@@ -1,2 +1,2 @@
 # stdlibc
-A simple library std c ++ adapted in C
+A simple std library C++ adapted in C
