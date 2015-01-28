@@ -7,7 +7,7 @@
 typedef void *	InputIterator;
 typedef void *	pointer;
 typedef void *	value_type;
-typedef void *	key_type;
+typedef char *	key_type;
 typedef void *	value_compare;
 
 typedef size_t	size_type;

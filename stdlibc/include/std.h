@@ -15,4 +15,8 @@ typedef struct		s_namespace
 
 extern struct s_namespace	std;
 
+# define STRING	(*std.string)
+# define LIST	(*std.list)
+# define DEQUE	(*std.deque)
+
 #endif /* !STD_H_ */

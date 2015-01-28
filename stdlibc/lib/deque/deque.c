@@ -34,22 +34,22 @@ static void		destructor(deque *this)
 
 static iterator		begin(deque *this)
 {
-  iterator		begin;
+  iterator		it;
 
-  begin = this->content;
-  while (begin != NULL && begin->rewind != NULL)
-    begin = begin->rewind;
-  return (begin);
+  it = this->content;
+  while (it != NULL && it->rewind != NULL)
+    DECREMENT_IT(it);
+  return (it);
 }
 
 static iterator		end(deque *this)
 {
-  iterator		end;
+  iterator		it;
 
-  end = this->content;
-  while (end != NULL && end->forward != NULL)
-    end = end->forward;
-  return (end);
+  it = this->content;
+  while (it != NULL && it->forward != NULL)
+    INCREMENT_IT(it);
+  return (it);
 }
 
 static size_type	size(deque *this)
@@ -62,7 +62,7 @@ static size_type	size(deque *this)
   while (it != NULL)
   {
     ++n;
-    it = it->forward;
+    INCREMENT_IT(it);
   }
   return (n);
 }
@@ -108,7 +108,7 @@ static void		*at(deque *this, size_type n)
   it = g_deque.begin(this);
   while (it != NULL && n != 0)
   {
-    it = it->forward;
+    INCREMENT_IT(it);
     --n;
   }
   return (it != NULL ? it->value : NULL);
@@ -139,7 +139,7 @@ static void		assign(deque *this, InputIterator first, InputIterator last)
   while (it != NULL && it != last)
   {
     g_deque.push_back(this, it->value);
-    it = it->forward;
+    INCREMENT_IT(it);
   }
 }
 
@@ -224,7 +224,7 @@ static iterator		insert(deque *this, iterator position, const value_type val)
   it->forward = NULL;
   tmp = g_deque.begin(this);
   while (tmp != NULL && tmp->forward != NULL && tmp != position)
-    tmp = tmp->forward;
+    INCREMENT_IT(tmp);
   it->forward = tmp->forward;
   it->rewind = tmp;
   if (tmp->forward != NULL)
@@ -240,7 +240,7 @@ static iterator		erase(deque *this, iterator position)
 
   it = g_deque.begin(this);
   while (it != NULL && it != position)
-    it = it->forward;
+    INCREMENT_IT(it);
   if (it != position)
     return (NULL);
   tmp = it->forward;
@@ -271,7 +271,7 @@ static void		clear(deque *this)
   if ((it = g_deque.begin(this))->forward != NULL)
   {
     it->value = NULL;
-    it = it->forward;
+    INCREMENT_IT(it);
   }
   while (it != NULL)
   {
