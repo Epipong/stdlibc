@@ -317,16 +317,15 @@ static void		unique(list *this, BinaryPredicate binary_pred)
   {
     tmp = it->forward;
     while (tmp != NULL)
-    {
-      tmp = binary_pred(it->value, tmp->value) ? 
-	g_list.erase(this, tmp) : tmp->forward;
-    }
+      tmp = binary_pred(it->value, tmp->value) ? erase(this, tmp) : tmp->forward;
     it = it->forward;
   }
 }
 
-static void		merge(list *this, list *x)
+static void		merge(list *this, list *x, Compare comp)
 {
+  splice(this, begin(this), x);
+  g_list.sort(this, comp);
 }
 
 static void		sort(list *this, Compare comp)
@@ -354,7 +353,21 @@ static void		sort(list *this, Compare comp)
 
 static void		reverse(list *this)
 {
+  iterator		it1;
+  iterator		it2;
 
+  it1 = begin(this);
+  it2 = end(this);
+  while (it1 != NULL && it2 != NULL)
+  {
+    it1->value = (void *)((size_t)(it1->value) ^ (size_t)(it2->value));
+    it2->value = (void *)((size_t)(it2->value) ^ (size_t)(it1->value));
+    it1->value = (void *)((size_t)(it1->value) ^ (size_t)(it2->value));
+    if ((it1 = it1->forward) == it2)
+      return ;
+    if ((it2 = it2->rewind) == it1)
+      return ;
+  }
 }
 
 struct s_list_class	g_list = {

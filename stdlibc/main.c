@@ -80,9 +80,10 @@ static void	list_test_splice()
   it = std.list->begin(&mylist1);
   it = it->forward;				// points to 2
 
-  std.list->splice(&mylist1, it, &mylist2);	// mylist1: 1 10 20 30 2 3 4
-  						// mylist2 (empty)
-  						// "it" still points to 2 (the 5th element)
+  std.list->merge(&mylist1, &mylist2, &list_compare_int);
+  /* std.list->splice(&mylist1, it, &mylist2);	// mylist1: 1 10 20 30 2 3 4 */
+  /* 						// mylist2 (empty) */
+  /* 						// "it" still points to 2 (the 5th element) */
 
   printf("mylist1 contains:");
   for (it = std.list->begin(&mylist1); it != NULL; it = it->forward)
@@ -120,6 +121,9 @@ static void	list_test_unique()
 
 // sort my list order by value asc
   std.list->sort(&mylist, &list_compare_int);
+
+// reverse list
+  std.list->reverse(&mylist);
 
 // dump my list
   it = std.list->begin(&mylist);

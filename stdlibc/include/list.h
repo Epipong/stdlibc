@@ -46,7 +46,7 @@ struct s_list_class
   void		(*remove)(list *this, const value_type val);
   void		(*remove_if)(list *this, Predicate pred);
   void		(*unique)(list *this, BinaryPredicate binary_pred);
-  void		(*merge)(list *this, list *x);
+  void		(*merge)(list *this, list *x, Compare comp);
   void		(*sort)(list *this, Compare comp);
   void		(*reverse)(list *this);
 };
