@@ -8,12 +8,12 @@
 ** Last update Wed Jul  2 02:33:44 2014 davy tran
 */
 
-#ifndef		DEQUE_H_
-# define	DEQUE_H_
+#ifndef DEQUE_H_
+# define DEQUE_H_
 
-# include	<stdlib.h>
-# include	<stdbool.h>
-# include	"iterator.h"
+# include <stdlib.h>
+# include <stdbool.h>
+# include "iterator.h"
 
 typedef struct s_deque	deque;
 
@@ -53,4 +53,4 @@ struct		s_deque_class
 
 extern struct s_deque_class	g_deque;
 
-#endif		/* !DEQUE_H_ */
+#endif /* !DEQUE_H_ */

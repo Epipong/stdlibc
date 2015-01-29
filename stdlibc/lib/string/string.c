@@ -41,9 +41,9 @@ static void		resize(string *this, size_t n)
 
   if (n < (len = g_string.size(this)))
     this->str[n] = '\0';
-  this->size = 0;
+  this->size = 1;
   while (this->size <= n)
-    this->size += ALLOC_LENGTH;
+    this->size <<= 1;
   if ((this->str = realloc(this->str, this->size)) == NULL)
     this->size = 0;
   else if (len == 0)

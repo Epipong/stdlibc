@@ -1,50 +1,6 @@
 #include <stdio.h>
 #include "std.h"
 
-static void	string_test()
-{
-  string	str;
-  string	*s;
-  int		age;
-
-  age = 21;
-
-// constructor of string
-  STRING.constructor(&str, "Je suis ");
-
-  printf("size: %zu\n", STRING.size(&str));
-  printf("capacity: %zu\n", STRING.capacity(&str));
-
-  printf("\n================\n\n");
-  printf("change capacity to 32\n");
-
-// resize string
-  STRING.resize(&str, 28);
-  printf("size: %zu\n", STRING.size(&str));
-  printf("capacity: %zu\n", STRING.capacity(&str));
-
-  printf("str[%d] = %c\n", 5, STRING.at(&str, 5));
-
-// append string
-  STRING.append(&str, "Davy ");
-
-// push back a character
-  STRING.push_back(&str, '!');
-
-// insert a string into main string
-  STRING.insert(&str, STRING.size(&str), " Et j'ai ");
-
-  printf("%s", STRING.c_str(&str));
-
-// int to string conversion
-  s = std.to_string(age);
-  printf("%s\n", s->str);
-
-  STRING.destructor(&str);
-  STRING.destructor(s);
-  free(s);
-}
-
 static bool	list_unique_int(const value_type a, const value_type b)
 {
   return (*((int *)a) == *((int *)b));
@@ -78,7 +34,7 @@ static void	list_test_splice()
   }
 
   it = LIST.begin(&mylist1);
-  it = it->forward;				// points to 2
+  INCREMENT_IT(it);				// points to 2
 
   LIST.merge(&mylist1, &mylist2, &list_compare_int);
   /* LIST.splice(&mylist1, it, &mylist2);	// mylist1: 1 10 20 30 2 3 4 */
@@ -155,7 +111,6 @@ static void	deque_test()
 
 int		main(/*int argc, char const *argv[]*/)
 {
-  /* string_test(); */
   /* list_test_unique(); */
   list_test_splice();
   /* deque_test(); */

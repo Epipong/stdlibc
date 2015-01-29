@@ -64,14 +64,14 @@ static size_type	size(list *this)
 
 static size_type	max_size(list *this)
 {
-  return (g_list.size(this));
+  return (size(this));
 }
 
 static void		*front(list *this)
 {
   iterator		it;
 
-  it = g_list.begin(this);
+  it = begin(this);
   return (it != NULL ? it->value : NULL);
 }
 
@@ -79,7 +79,7 @@ static void		*back(list *this)
 {
   iterator		it;
 
-  it = g_list.end(this);
+  it = end(this);
   return (it != NULL ? it->value : NULL);
 }
 
