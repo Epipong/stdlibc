@@ -109,10 +109,22 @@ static void	deque_test()
   DEQUE.destructor(&mydeque);
 }
 
+static void	map_test()
+{
+  map		foo;
+  int		age = 25;
+
+  MAP.constructor(&foo, NULL);
+  MAP.insert(&foo, (pair){"mon age", &age});
+  printf("mon age: %d\n", *((int *)MAP.at(&foo, "mon age")));
+  MAP.destructor(&foo);
+}
+
 int		main(/*int argc, char const *argv[]*/)
 {
   /* list_test_unique(); */
-  list_test_splice();
+  /* list_test_splice(); */
   /* deque_test(); */
+  map_test();
   return (EXIT_SUCCESS);
 }

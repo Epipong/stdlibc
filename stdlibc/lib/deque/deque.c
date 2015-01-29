@@ -257,6 +257,9 @@ static void		swap(deque *this, deque *x)
   this->content = (void *)((size_t)(this->content) ^ (size_t)(x->content));
   x->content = (void *)((size_t)(x->content) ^ (size_t)(this->content));
   this->content = (void *)((size_t)(this->content) ^ (size_t)(x->content));
+  this->size ^= x->size;
+  x->size ^= this->size;
+  this->size ^= x->size;
 }
 
 static void		clear(deque *this)

@@ -1,8 +1,10 @@
 #ifndef MAP_H_
 # define MAP_H_
 
-# include "iterator.h"
 # include "bits/helper.h"
+# include "iterator.h"
+# include "pair.h"
+# include "list.h"
 
 typedef struct s_map	map;
 
@@ -10,6 +12,7 @@ struct		s_map
 {
   iterator	content;
   size_type	size;
+  node		tree;
   key_compare	comp;
 };
 
@@ -27,7 +30,7 @@ struct		s_map_class
 
   void		*(*at)(map *this, const key_type k);
 
-  iterator	(*insert)(map *this, iterator position, const value_type val);
+  iterator	(*insert)(map *this, const pair val);
   iterator	(*erase)(map *this, iterator position);
   void		(*swap)(map *this, map *x);
   void		(*clear)(map *this);
