@@ -13,7 +13,8 @@ struct		s_map
   iterator	content;
   size_type	size;
   node		tree;
-  key_compare	comp;
+  key_compare	k_comp;
+  value_compare	v_comp;
 };
 
 struct		s_map_class

@@ -58,8 +58,9 @@ static void		constructor(map *this, key_compare comp)
 {
   if (this != NULL)
     memset(this, 0, sizeof(*this));
-  this->comp = (comp != NULL) ? 
+  this->k_comp = (comp != NULL) ? 
     comp : (int (*)(const value_type, const value_type))&strcmp;
+  this->v_comp = this->k_comp;
 }
 
 static void		destructor(map *this)
@@ -124,7 +125,7 @@ static void		*at(map *this, const key_type k)
 {
   node			tmp;
 
-  if ((tmp = node_search(this->tree, k, this->comp)) != NULL && 
+  if ((tmp = node_search(this->tree, k, this->k_comp)) != NULL && 
       tmp->content != NULL)
     return (tmp->content->value);
   return (NULL);
@@ -134,7 +135,7 @@ static iterator		insert(map *this, const pair val)
 {
   node			tmp;
 
-  if ((tmp = node_insert(&this->tree, val.first, this->comp)) == NULL)
+  if ((tmp = node_insert(&this->tree, val.first, this->k_comp)) == NULL)
     return (NULL);
   g_list.push_back((list *)this, val.second);
   return ((tmp->content = g_list.end((list *)this)));
@@ -156,9 +157,12 @@ static void		swap(map *this, map *x)
   this->tree = (void *)((size_t)(this->tree) ^ (size_t)(x->tree));
   x->tree = (void *)((size_t)(x->tree) ^ (size_t)(this->tree));
   this->tree = (void *)((size_t)(this->tree) ^ (size_t)(x->tree));
-  this->comp = (void *)((size_t)(this->comp) ^ (size_t)(x->comp));
-  x->comp = (void *)((size_t)(x->comp) ^ (size_t)(this->comp));
-  this->comp = (void *)((size_t)(this->comp) ^ (size_t)(x->comp));
+  this->k_comp = (void *)((size_t)(this->k_comp) ^ (size_t)(x->k_comp));
+  x->k_comp = (void *)((size_t)(x->k_comp) ^ (size_t)(this->k_comp));
+  this->k_comp = (void *)((size_t)(this->k_comp) ^ (size_t)(x->k_comp));
+  this->v_comp = (void *)((size_t)(this->v_comp) ^ (size_t)(x->v_comp));
+  x->v_comp = (void *)((size_t)(x->v_comp) ^ (size_t)(this->v_comp));
+  this->v_comp = (void *)((size_t)(this->v_comp) ^ (size_t)(x->v_comp));
 }
 
 static void		clear(map *this)
@@ -170,22 +174,26 @@ static void		clear(map *this)
 
 static key_compare	key_comp(map *this)
 {
-  return (this->comp);
+  return (this->k_comp);
 }
 
 static value_compare	value_comp(map *this)
 {
-  return (NULL);
+  return (this->v_comp);
 }
 
 static iterator		find(map *this, const key_type k)
 {
+  node			tmp;
+
+  if ((tmp = node_search(this->tree, k, this->k_comp)) != NULL)
+    return (tmp->content);
   return (NULL);
 }
 
 static size_type	count(map *this, const key_type k)
 {
-  return (0);
+  return (node_search(this->tree, k, this->k_comp) != NULL ? 1 : 0);
 }
 
 static iterator		lower_bound(map *this, const key_type k)
