@@ -25,7 +25,8 @@ static node	node_insert(node *tree, const key_type k, key_compare comp)
   {
     if ((tmp = calloc(sizeof(*tmp), 1)) == NULL)
       exit(EXIT_FAILURE);
-    tmp->key = k;
+    if ((tmp->key = strdup(k)) == NULL)
+      exit(EXIT_FAILURE);
     return ((*tree = tmp));
   }
   if ((n = comp((*tree)->key, k)) < 0)
@@ -35,18 +36,16 @@ static node	node_insert(node *tree, const key_type k, key_compare comp)
   return (NULL);
 }
 
-static void	node_clear(node *tree)
+static void	node_clear(node tree)
 {
-  if (*tree == NULL)
-    return ;
-  if ((*tree)->left != NULL)
-    node_clear(&((*tree)->left));
-  else if ((*tree)->right != NULL)
-    node_clear(&((*tree)->right));
-  if (*tree != NULL)
+  if (tree != NULL)
   {
-    free(*tree);
-    *tree = NULL;
+    node_clear(tree->left);
+    node_clear(tree->right);
+    if (tree->content->first != NULL)
+      free(tree->content->first);
+    free(tree);
+    tree = NULL;
   }
 }
 
@@ -76,9 +75,9 @@ static void		destructor(map *this)
   this->tree = NULL;
 }
 
-static iterator		begin(map *this)
+static p_iterator	begin(map *this)
 {
-  iterator		it;
+  p_iterator		it;
 
   it = this->content;
   while (it != NULL && it->rewind != NULL)
@@ -86,9 +85,9 @@ static iterator		begin(map *this)
   return (it);
 }
 
-static iterator		end(map *this)
+static p_iterator	end(map *this)
 {
-  iterator		it;
+  p_iterator		it;
 
   it = this->content;
   while (it != NULL && it->forward != NULL)
@@ -98,12 +97,13 @@ static iterator		end(map *this)
 
 static bool		empty(map *this)
 {
-  return (!this || !this->content || !this->content->value);
+  return (!this || !this->content || 
+	  !this->content->first || !this->content->second);
 }
 
 static size_type	size(map *this)
 {
-  iterator		it;
+  p_iterator		it;
   size_type		n;
 
   it = g_map.begin(this);
@@ -127,23 +127,41 @@ static void		*at(map *this, const key_type k)
 
   if ((tmp = node_search(this->tree, k, this->k_comp)) != NULL && 
       tmp->content != NULL)
-    return (tmp->content->value);
+    return (tmp->content->second);
   return (NULL);
 }
 
-static iterator		insert(map *this, const pair val)
+static p_iterator	insert(map *this, const pair val)
 {
+  p_iterator		it;
+  p_iterator		end;
   node			tmp;
 
-  if ((tmp = node_insert(&this->tree, val.first, this->k_comp)) == NULL)
+  if (g_map.count(this, val.first) == 1 || 
+      (tmp = node_insert(&this->tree, val.first, this->k_comp)) == NULL)
     return (NULL);
-  g_list.push_back((list *)this, val.second);
-  return ((tmp->content = g_list.end((list *)this)));
+  if ((end = g_map.end(this)) != NULL && end->second == NULL)
+  {
+    end->second = val.second;
+    return (end);
+  }
+  if ((it = calloc(sizeof(*it), 1)) == NULL)
+    exit(EXIT_FAILURE);
+  it->first = tmp->key;
+  it->second = val.second;
+  if (end != NULL)
+  {
+    end->forward = it;
+    it->rewind = end;
+  }
+  else
+    this->content = it;
+  return ((tmp->content = g_map.end(this)));
 }
 
-static iterator		erase(map *this, iterator position)
+static p_iterator	erase(map *this, p_iterator position)
 {
-  return (g_list.erase((list *)this, position));
+  return ((p_iterator)g_list.erase((list *)this, (iterator)position));
 }
 
 static void		swap(map *this, map *x)
@@ -167,7 +185,7 @@ static void		swap(map *this, map *x)
 
 static void		clear(map *this)
 {
-  node_clear(&this->tree);
+  node_clear(this->tree);
   this->tree = NULL;
   g_list.clear((list *)this);
 }
@@ -182,7 +200,7 @@ static value_compare	value_comp(map *this)
   return (this->v_comp);
 }
 
-static iterator		find(map *this, const key_type k)
+static p_iterator	find(map *this, const key_type k)
 {
   node			tmp;
 
@@ -196,12 +214,12 @@ static size_type	count(map *this, const key_type k)
   return (node_search(this->tree, k, this->k_comp) != NULL ? 1 : 0);
 }
 
-static iterator		lower_bound(map *this, const key_type k)
+static p_iterator	lower_bound(map *this, const key_type k)
 {
   return (NULL);
 }
 
-static iterator		upper_bound(map *this, const key_type k)
+static p_iterator	upper_bound(map *this, const key_type k)
 {
   return (NULL);
 }

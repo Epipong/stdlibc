@@ -10,7 +10,7 @@ typedef struct s_map	map;
 
 struct		s_map
 {
-  iterator	content;
+  p_iterator	content;
   size_type	size;
   node		tree;
   key_compare	k_comp;
@@ -22,8 +22,8 @@ struct		s_map_class
   void		(*constructor)(map *this, key_compare comp);
   void		(*destructor)(map *this);
 
-  iterator	(*begin)(map *this);
-  iterator	(*end)(map *this);
+  p_iterator	(*begin)(map *this);
+  p_iterator	(*end)(map *this);
 
   bool		(*empty)(map *this);
   size_type	(*size)(map *this);
@@ -31,18 +31,18 @@ struct		s_map_class
 
   void		*(*at)(map *this, const key_type k);
 
-  iterator	(*insert)(map *this, const pair val);
-  iterator	(*erase)(map *this, iterator position);
+  p_iterator	(*insert)(map *this, const pair val);
+  p_iterator	(*erase)(map *this, p_iterator position);
   void		(*swap)(map *this, map *x);
   void		(*clear)(map *this);
 
   key_compare	(*key_comp)(map *this);
   value_compare	(*value_comp)(map *this);
 
-  iterator	(*find)(map *this, const key_type k);
+  p_iterator	(*find)(map *this, const key_type k);
   size_type	(*count)(map *this, const key_type k);
-  iterator	(*lower_bound)(map *this, const key_type k);
-  iterator	(*upper_bound)(map *this, const key_type k);
+  p_iterator	(*lower_bound)(map *this, const key_type k);
+  p_iterator	(*upper_bound)(map *this, const key_type k);
   void		*(*equal_range)(map *this, const key_type k);
 };
 

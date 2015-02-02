@@ -112,11 +112,20 @@ static void	deque_test()
 static void	map_test()
 {
   map		foo;
-  int		age = 25;
+  int		age = 21;
+  char		buff[2] = {'\0', '\0'};
 
   MAP.constructor(&foo, NULL);
-  MAP.insert(&foo, (pair){"mon age", &age});
-  printf("mon age: %d\n", *((int *)MAP.at(&foo, "mon age")));
+
+  for (char c = 'a'; c <= 'z'; ++c)
+  {
+    buff[0] = c;
+    MAP.insert(&foo, (pair){buff, &age});
+  }
+
+  for (p_iterator it = MAP.begin(&foo); it != NULL; INCREMENT_IT(it))
+    printf("\"%s\": %d\n", ((char *)it->first), *((int *)it->second));
+
   MAP.destructor(&foo);
 }
 
