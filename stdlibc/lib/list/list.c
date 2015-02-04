@@ -1,3 +1,13 @@
+/*
+** list.c for list in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <tran_y@epitech.net>
+** 
+** Started on  Wed Feb  4 19:21:25 2015 davy tran
+** Last update Wed Feb  4 19:21:32 2015 davy tran
+*/
+
 #include <string.h>
 #include "list.h"
 

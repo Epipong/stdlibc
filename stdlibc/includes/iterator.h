@@ -1,3 +1,13 @@
+/*
+** iterator.h for iterator in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <tran_yepitech.net>
+** 
+** Started on  Wed Feb  4 14:44:46 2015 davy tran
+** Last update Wed Feb  4 19:15:01 2015 davy tran
+*/
+
 #ifndef ITERATOR_H_
 # define ITERATOR_H_
 
@@ -33,4 +43,4 @@ struct		s_p_iterator
 # define INCREMENT_IT(x)	((x) = (x)->forward)
 # define DECREMENT_IT(x)	((x) = (x)->rewind)
 
-#endif /* :ITERATOR_H_ */
+#endif /* !ITERATOR_H_ */

@@ -1,3 +1,13 @@
+/*
+** vector.h for vector in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <tran_yepitech.net>
+** 
+** Started on  Wed Feb  4 14:45:05 2015 davy tran
+** Last update Wed Feb  4 19:15:31 2015 davy tran
+*/
+
 #ifndef VECTOR_H_
 # define VECTOR_H_
 
@@ -9,7 +19,7 @@ typedef struct s_vector	vector;
 
 struct		s_vector
 {
-  void		**array;
+  iterator	*content;
   size_type	size;
 };
 

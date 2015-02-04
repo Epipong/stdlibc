@@ -1,3 +1,13 @@
+/*
+** helper.h for helper in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <tran_y@epitech.net>
+** 
+** Started on  Wed Feb  4 14:54:13 2015 davy tran
+** Last update Wed Feb  4 19:15:39 2015 davy tran
+*/
+
 #ifndef GLOBAL_H_
 # define GLOBAL_H_
 

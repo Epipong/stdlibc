@@ -1,3 +1,13 @@
+/*
+** main.c for main in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <davy@epitech.net>
+** 
+** Started on  Wed Feb  4 19:14:15 2015 davy tran
+** Last update Wed Feb  4 19:14:40 2015 davy tran
+*/
+
 #include <stdio.h>
 #include "std.h"
 

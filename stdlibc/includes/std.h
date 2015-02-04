@@ -1,3 +1,13 @@
+/*
+** std.h for vector in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <tran_yepitech.net>
+** 
+** Started on  Wed Feb  4 14:45:10 2015 davy tran
+** Last update Wed Feb  4 19:15:23 2015 davy tran
+*/
+
 #ifndef STD_H_
 # define STD_H_
 
@@ -5,6 +15,7 @@
 # include "list.h"
 # include "deque.h"
 # include "map.h"
+# include "vector.h"
 
 typedef struct		s_namespace
 {
@@ -12,6 +23,7 @@ typedef struct		s_namespace
   struct s_list_class	*list;
   struct s_deque_class	*deque;
   struct s_map_class	*map;
+  struct s_vector_class	*vector;
   string		*(*to_string)(int val);
 }			namespace;
 
@@ -21,5 +33,6 @@ extern struct s_namespace	std;
 # define LIST	(*std.list)
 # define DEQUE	(*std.deque)
 # define MAP	(*std.map)
+# define VECTOR	(*std.vector)
 
 #endif /* !STD_H_ */

@@ -1,3 +1,13 @@
+/*
+** map.h for map in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <tran_yepitech.net>
+** 
+** Started on  Wed Feb  4 14:45:23 2015 davy tran
+** Last update Wed Feb  4 19:15:14 2015 davy tran
+*/
+
 #ifndef MAP_H_
 # define MAP_H_
 

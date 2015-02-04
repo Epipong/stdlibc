@@ -1,3 +1,13 @@
+/*
+** _string.h for string in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <tran_yepitech.net>
+** 
+** Started on  Wed Feb  4 14:44:34 2015 davy tran
+** Last update Wed Feb  4 19:15:27 2015 davy tran
+*/
+
 #ifndef _STRING_H_
 # define _STRING_H_
 

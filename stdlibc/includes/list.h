@@ -1,3 +1,13 @@
+/*
+** list.h for list in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <tran_yepitech.net>
+** 
+** Started on  Wed Feb  4 14:45:29 2015 davy tran
+** Last update Wed Feb  4 19:15:09 2015 davy tran
+*/
+
 #ifndef LIST_H_
 # define LIST_H_
 

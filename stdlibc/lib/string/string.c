@@ -1,3 +1,13 @@
+/*
+** string.c for string in /home/davy/Rendu/stdlibc/stdlibc
+** 
+** Made by davy tran
+** Login   <tran_y@epitech.net>
+** 
+** Started on  Wed Feb  4 19:21:59 2015 davy tran
+** Last update Wed Feb  4 19:22:04 2015 davy tran
+*/
+
 #include <string.h>
 #include <stdio.h>
 #include "_string.h"

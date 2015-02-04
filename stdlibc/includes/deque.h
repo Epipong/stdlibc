@@ -1,11 +1,11 @@
 /*
-** deque.h for deque in /home/tran_y/Templates/C/libs/libdeque
-**
+** deque.h for deque in /home/davy/Rendu/stdlibc/stdlibc
+** 
 ** Made by davy tran
 ** Login   <tran_y@epitech.net>
-**
-** Started on  Tue Apr 29 17:02:08 2014 davy tran
-** Last update Wed Jul  2 02:33:44 2014 davy tran
+** 
+** Started on  Wed Feb  4 19:14:52 2015 davy tran
+** Last update Wed Feb  4 19:22:27 2015 davy tran
 */
 
 #ifndef DEQUE_H_
