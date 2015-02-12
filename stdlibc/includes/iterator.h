@@ -5,7 +5,7 @@
 ** Login   <tran_yepitech.net>
 ** 
 ** Started on  Wed Feb  4 14:44:46 2015 davy tran
-** Last update Wed Feb  4 19:15:01 2015 davy tran
+** Last update Thu Feb 12 00:27:43 2015 davy tran
 */
 
 #ifndef ITERATOR_H_
@@ -25,6 +25,9 @@ struct		s_node
   node		right;
 };
 
+/*
+** iterator structure use for chained list (e.g., deque, list or vector)
+*/
 struct		s_iterator
 {
   value_type	value;
@@ -32,6 +35,9 @@ struct		s_iterator
   iterator	rewind;
 };
 
+/*
+** iterator structure use for pair list (e.g., map)
+*/
 struct		s_p_iterator
 {
   value_type	second;

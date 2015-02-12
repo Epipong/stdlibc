@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 ** 
 ** Started on  Wed Feb  4 19:21:25 2015 davy tran
-** Last update Wed Feb  4 19:21:32 2015 davy tran
+** Last update Thu Feb 12 00:18:40 2015 davy tran
 */
 
 #include <string.h>
@@ -219,12 +219,8 @@ static iterator		erase(list *this, iterator position)
 
 static void		swap(list *this, list *x)
 {
-  this->content = (void *)((size_t)(this->content) ^ (size_t)(x->content));
-  x->content = (void *)((size_t)(x->content) ^ (size_t)(this->content));
-  this->content = (void *)((size_t)(this->content) ^ (size_t)(x->content));
-  this->size ^= x->size;
-  x->size ^= this->size;
-  this->size ^= x->size;
+  SWAP_PTR(this->content, x->content);
+  SWAP_NBR(this->size, x->size);
 }
 
 static void		resize(list *this, size_type n)
@@ -353,11 +349,7 @@ static void		sort(list *this, Compare comp)
     while (tmp != NULL)
     {
       if (comp(it->value, tmp->value))
-      {
-	it->value = (void *)((size_t)(it->value) ^ (size_t)(tmp->value));
-	tmp->value = (void *)((size_t)(tmp->value) ^ (size_t)(it->value));
-	it->value = (void *)((size_t)(it->value) ^ (size_t)(tmp->value));
-      }
+	SWAP_PTR(it->value, tmp->value);
       INCREMENT_IT(tmp);
     }
     INCREMENT_IT(it);
@@ -373,12 +365,9 @@ static void		reverse(list *this)
   it2 = end(this);
   while (it1 != NULL && it2 != NULL)
   {
-    it1->value = (void *)((size_t)(it1->value) ^ (size_t)(it2->value));
-    it2->value = (void *)((size_t)(it2->value) ^ (size_t)(it1->value));
-    it1->value = (void *)((size_t)(it1->value) ^ (size_t)(it2->value));
-    if ((INCREMENT_IT(it1)) == it2)
-      return ;
-    if ((DECREMENT_IT(it2)) == it1)
+    SWAP_PTR(it1->value, it2->value);
+    if ((INCREMENT_IT(it1)) == it2 ||
+	(DECREMENT_IT(it2)) == it1)
       return ;
   }
 }

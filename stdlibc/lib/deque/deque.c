@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Tue Apr 29 17:01:50 2014 davy tran
-** Last update Wed Jul  2 02:41:43 2014 davy tran
+** Last update Wed Feb 11 23:04:32 2015 davy tran
 */
 
 #include <string.h>
@@ -254,12 +254,8 @@ static iterator		erase(deque *this, iterator position)
 
 static void		swap(deque *this, deque *x)
 {
-  this->content = (void *)((size_t)(this->content) ^ (size_t)(x->content));
-  x->content = (void *)((size_t)(x->content) ^ (size_t)(this->content));
-  this->content = (void *)((size_t)(this->content) ^ (size_t)(x->content));
-  this->size ^= x->size;
-  x->size ^= this->size;
-  this->size ^= x->size;
+  SWAP_PTR(this->content, x->content);
+  SWAP_NBR(this->size, x->size);
 }
 
 static void		clear(deque *this)

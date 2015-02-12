@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 ** 
 ** Started on  Wed Feb  4 19:21:59 2015 davy tran
-** Last update Wed Feb  4 19:22:04 2015 davy tran
+** Last update Wed Feb 11 23:05:20 2015 davy tran
 */
 
 #include <string.h>
@@ -146,9 +146,7 @@ static char const	*replace(string *this, size_t pos, size_t len, char const *str
 
 static void		swap(string *this, string *str)
 {
-  this->str = (char *)((size_t)this->str ^ (size_t)str->str);
-  str->str = (char *)((size_t)str->str ^ (size_t)this->str);
-  this->str = (char *)((size_t)this->str ^ (size_t)str->str);
+  SWAP_PTR(this->str, str->str);
 }
 
 static char const	*c_str(string *this)

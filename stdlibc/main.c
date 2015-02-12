@@ -5,7 +5,7 @@
 ** Login   <davy@epitech.net>
 ** 
 ** Started on  Wed Feb  4 19:14:15 2015 davy tran
-** Last update Wed Feb  4 19:14:40 2015 davy tran
+** Last update Thu Feb 12 01:04:46 2015 davy tran
 */
 
 #include <stdio.h>
@@ -139,11 +139,25 @@ static void	map_test()
   MAP.destructor(&foo);
 }
 
-int		main(/*int argc, char const *argv[]*/)
+static void	list_test_argv(char const *argv[])
+{
+  list		mylist;
+
+  LIST.constructor(&mylist);
+  for (char const *s = *argv; s != NULL; s = *(++argv))
+    LIST.push_back(&mylist, (const value_type)s);
+  for (iterator it = LIST.begin(&mylist); !LIST.empty(&mylist); LIST.pop_front(&mylist))
+    printf("%s\n", LIST.front(&mylist));
+  LIST.destructor(&mylist);
+}
+
+int		main(int argc, char const *argv[])
 {
   /* list_test_unique(); */
   /* list_test_splice(); */
+  if (argc > 1)
+    list_test_argv(argv);
   /* deque_test(); */
-  map_test();
+  /* map_test(); */
   return (EXIT_SUCCESS);
 }

@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 ** 
 ** Started on  Wed Feb  4 19:18:21 2015 davy tran
-** Last update Wed Feb  4 19:21:39 2015 davy tran
+** Last update Thu Feb 12 00:33:04 2015 davy tran
 */
 
 #include <string.h>
@@ -176,21 +176,11 @@ static p_iterator	erase(map *this, p_iterator position)
 
 static void		swap(map *this, map *x)
 {
-  this->content = (void *)((size_t)(this->content) ^ (size_t)(x->content));
-  x->content = (void *)((size_t)(x->content) ^ (size_t)(this->content));
-  this->content = (void *)((size_t)(this->content) ^ (size_t)(x->content));
-  this->size ^= x->size;
-  x->size ^= this->size;
-  this->size ^= x->size;
-  this->tree = (void *)((size_t)(this->tree) ^ (size_t)(x->tree));
-  x->tree = (void *)((size_t)(x->tree) ^ (size_t)(this->tree));
-  this->tree = (void *)((size_t)(this->tree) ^ (size_t)(x->tree));
-  this->k_comp = (void *)((size_t)(this->k_comp) ^ (size_t)(x->k_comp));
-  x->k_comp = (void *)((size_t)(x->k_comp) ^ (size_t)(this->k_comp));
-  this->k_comp = (void *)((size_t)(this->k_comp) ^ (size_t)(x->k_comp));
-  this->v_comp = (void *)((size_t)(this->v_comp) ^ (size_t)(x->v_comp));
-  x->v_comp = (void *)((size_t)(x->v_comp) ^ (size_t)(this->v_comp));
-  this->v_comp = (void *)((size_t)(this->v_comp) ^ (size_t)(x->v_comp));
+  SWAP_PTR(this->content, x->content);
+  SWAP_NBR(this->size, x->size);
+  SWAP_PTR(this->tree, x->tree);
+  SWAP_PTR(this->k_comp, x->k_comp);
+  SWAP_PTR(this->v_comp, x->v_comp);
 }
 
 static void		clear(map *this)
@@ -224,17 +214,17 @@ static size_type	count(map *this, const key_type k)
   return (node_search(this->tree, k, this->k_comp) != NULL ? 1 : 0);
 }
 
-static p_iterator	lower_bound(map *this, const key_type k)
+static p_iterator	lower_bound(__attribute__((unused))map *this, __attribute__((unused))const key_type k)
 {
   return (NULL);
 }
 
-static p_iterator	upper_bound(map *this, const key_type k)
+static p_iterator	upper_bound(__attribute__((unused))map *this, __attribute__((unused))const key_type k)
 {
   return (NULL);
 }
 
-static void		*equal_range(map *this, const key_type k)
+static void		*equal_range(__attribute__((unused))map *this, __attribute__((unused))const key_type k)
 {
   return (NULL);
 }

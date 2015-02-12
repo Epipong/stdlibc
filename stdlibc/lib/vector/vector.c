@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 ** 
 ** Started on  Wed Feb  4 19:22:11 2015 davy tran
-** Last update Wed Feb  4 19:22:17 2015 davy tran
+** Last update Thu Feb 12 00:31:55 2015 davy tran
 */
 
 #include <string.h>
@@ -72,7 +72,7 @@ static bool		empty(vector *this)
   return (this->content == NULL || this->size == 0);
 }
 
-static void		reserve(vector *this, size_type n)
+static void		reserve(__attribute__((unused))vector *this, __attribute__((unused))size_type n)
 {
 }
 
@@ -94,7 +94,7 @@ static void		*back(vector *this)
   return (n > 0 ? at(this, n - 1) : NULL);
 }
 
-static void		assign(vector *this, InputIterator first, InputIterator last)
+static void		assign(__attribute__((unused))vector *this, InputIterator first, InputIterator last)
 {
   iterator		it;
 
@@ -103,29 +103,29 @@ static void		assign(vector *this, InputIterator first, InputIterator last)
     INCREMENT_IT(it);
 }
 
-static void		push_back(vector *this, const value_type val)
+static void		push_back(__attribute__((unused))vector *this, __attribute__((unused))const value_type val)
 {
 }
 
-static void		pop_back(vector *this)
+static void		pop_back(__attribute__((unused))vector *this)
 {
 }
 
-static iterator		insert(vector *this, iterator position, const value_type val)
-{
-  return (NULL);
-}
-
-static iterator		erase(vector *this, iterator position)
+static iterator		insert(__attribute__((unused))vector *this, __attribute__((unused))iterator position, __attribute__((unused))const value_type val)
 {
   return (NULL);
 }
 
-static void		swap(vector *this, vector *x)
+static iterator		erase(__attribute__((unused))vector *this, __attribute__((unused))iterator position)
+{
+  return (NULL);
+}
+
+static void		swap(__attribute__((unused))vector *this, __attribute__((unused))vector *x)
 {
 }
 
-static void		clear(vector *this)
+static void		clear(__attribute__((unused))vector *this)
 {
 }
 
