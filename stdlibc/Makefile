@@ -24,7 +24,7 @@ GENERATOR	=	ranlib
 
 COMPILER	=	clang
 
-CFLAGS		+=	-Wall -Wextra -Werror -D_BSD_SOURCE -D_GNU_SOURCE -std=c11
+CFLAGS		+=	-Wall -Wextra -Werror -D_BSD_SOURCE -D_GNU_SOURCE -std=c99
 CFLAGS		+=	-Iincludes
 
 NAME	=	libstd.a
