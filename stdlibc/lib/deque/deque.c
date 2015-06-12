@@ -15,8 +15,9 @@ static int const	g_default_val = 0;
 
 static void		constructor(deque *this)
 {
-  if (this != NULL)
-    memset(this, 0, sizeof(*this));
+  if (this == NULL)
+    return ;
+  memset(this, 0, sizeof(*this));
   if ((this->content = calloc(sizeof(*(this->content)), 1)) == NULL)
     exit(EXIT_FAILURE);
   this->size = 0;
