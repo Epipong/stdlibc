@@ -18,6 +18,16 @@
 
 typedef struct s_map	map;
 
+/*
+** Data structure for map.
+**
+** Attributes:
+**	content (iterator) -- Data stored.
+**	size (size_type) -- Size.
+**	tree (node) -- Binary tree node.
+**	k_comp (key_compare) -- Key compare method return boolean.
+**	v_comp (value_compare) -- Value compare method return boolean.
+*/
 struct		s_map
 {
   p_iterator	content;

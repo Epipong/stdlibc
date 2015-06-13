@@ -93,9 +93,7 @@ static char const	*append(string *this, char const *str)
 
 static void		push_back(string *this, char c)
 {
-  char const		tmp[] = {c, '\0'};
-
-  g_string.append(this, tmp);
+  g_string.append(this, (char const []){c, '\0'});
 }
 
 static char const	*assign(string *this, char const *str)

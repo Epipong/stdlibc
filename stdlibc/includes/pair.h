@@ -15,6 +15,13 @@
 
 typedef struct s_pair	pair;
 
+/*
+** Data structure for pair.
+**
+** Attributes:
+**	first (first_type) -- Left data.
+**	second (second_type) -- Right data.
+*/
 struct		s_pair
 {
   first_type	first;

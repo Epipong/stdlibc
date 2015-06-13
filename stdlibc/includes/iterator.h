@@ -17,6 +17,15 @@ typedef struct s_iterator *	iterator;
 typedef struct s_p_iterator *	p_iterator;
 typedef struct s_node *		node;
 
+/*
+** Node structure use for binary tree.
+**
+** Attributes:
+**	key (key_type) -- Key access to data stored.
+**	content (p_iterator) -- Content pair (first and second).
+**	left (node) -- Left node of binary tree.
+**	right (node) -- Right node of binary tree.
+*/
 struct		s_node
 {
   key_type	key;
@@ -26,7 +35,12 @@ struct		s_node
 };
 
 /*
-** iterator structure use for chained list (e.g., deque, list or vector)
+** iterator structure use for chained list (e.g., deque, list or vector).
+**
+** Attributes:
+**	value (value_type) -- Data stored.
+**	forward (iterator) -- Pointer of next element.
+**	rewind (iterator) -- Pointer of previous element.
 */
 struct		s_iterator
 {
@@ -37,6 +51,12 @@ struct		s_iterator
 
 /*
 ** iterator structure use for pair list (e.g., map)
+**
+** Attributes:
+**	second (value_type) -- Data right of element.
+**	forward (iterator) -- Pointer of next element.
+**	rewind (iterator) -- Pointer of previous element.
+**	first (value_type) -- Data left of element.
 */
 struct		s_p_iterator
 {

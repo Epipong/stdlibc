@@ -25,6 +25,14 @@
 
 typedef struct s_string string;
 
+/*
+** Data structure for string pseudo class.
+**
+** Attributes:
+**	str (char *) -- String data.
+**	size (size_type) Size of string data's bytes.
+**	length (size_type) -- Size of string data stopped by '\0'.
+*/
 struct		s_string
 {
   char		*str;

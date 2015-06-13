@@ -17,6 +17,13 @@
 
 typedef struct s_deque	deque;
 
+/*
+** Data structure for deque.
+**
+** Attributes:
+**	content (iterator) -- Data stored.
+**	size (size_type) -- Size.
+*/
 struct		s_deque
 {
   iterator	content;

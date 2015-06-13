@@ -17,6 +17,13 @@
 
 typedef struct s_list	list;
 
+/*
+** Data structure for list.
+**
+** Attributes:
+**	content (iterator) -- Data stored.
+**	size (size_type) -- Size.
+*/
 struct		s_list
 {
   iterator	content;

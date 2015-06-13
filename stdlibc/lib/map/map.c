@@ -11,7 +11,15 @@
 #include <string.h>
 #include "map.h"
 
-static node	node_search(node tree, const key_type k, key_compare comp)
+/*
+** Private method for search node with key compare method.
+**
+** Attributes:
+**	tree (node) -- Binary tree instance.
+**	k (key_type) -- Key comparison.
+**	comp (key_compare) -- Method comparison between key.
+*/
+static node	_node_search(node tree, const key_type k, key_compare comp)
 {
   int		n;
 
@@ -20,12 +28,20 @@ static node	node_search(node tree, const key_type k, key_compare comp)
   if ((n = comp(tree->key, k)) == 0)
     return (tree);
   else if (n < 0)
-    return (node_search(tree->left, k, comp));
+    return (_node_search(tree->left, k, comp));
   else
-    return (node_search(tree->right, k, comp));
+    return (_node_search(tree->right, k, comp));
 }
 
-static node	node_insert(node *tree, const key_type k, key_compare comp)
+/*
+** Private method for insert node with key compare method.
+**
+** Attributes:
+**	tree (node *) -- Binary tree instance.
+**	k (key_type) -- Key comparison.
+**	comp (key_compare) -- Method comparison between key.
+*/
+static node	_node_insert(node *tree, const key_type k, key_compare comp)
 {
   node		tmp;
   int		n;
@@ -40,28 +56,30 @@ static node	node_insert(node *tree, const key_type k, key_compare comp)
     return ((*tree = tmp));
   }
   if ((n = comp((*tree)->key, k)) < 0)
-    return (node_insert(&(*tree)->left, k, comp));
+    return (_node_insert(&(*tree)->left, k, comp));
   else if (n > 0)
-    return (node_insert(&(*tree)->right, k, comp));
+    return (_node_insert(&(*tree)->right, k, comp));
   return (NULL);
 }
 
-static void	node_clear(node tree)
+/*
+** Private method for clear all node.
+**
+** Attributes:
+**	tree (node) -- Binary tree instance.
+*/
+static void	_node_clear(node tree)
 {
   if (tree != NULL)
   {
-    node_clear(tree->left);
-    node_clear(tree->right);
+    _node_clear(tree->left);
+    _node_clear(tree->right);
     if (tree->content->first != NULL)
       free(tree->content->first);
     free(tree);
     tree = NULL;
   }
 }
-
-/*
-** *****************************************************************************
-*/
 
 static void		constructor(map *this, key_compare comp)
 {
@@ -135,7 +153,7 @@ static void		*at(map *this, const key_type k)
 {
   node			tmp;
 
-  if ((tmp = node_search(this->tree, k, this->k_comp)) != NULL && 
+  if ((tmp = _node_search(this->tree, k, this->k_comp)) != NULL && 
       tmp->content != NULL)
     return (tmp->content->second);
   return (NULL);
@@ -148,7 +166,7 @@ static p_iterator	insert(map *this, const pair val)
   node			tmp;
 
   if (g_map.count(this, val.first) == 1 || 
-      (tmp = node_insert(&this->tree, val.first, this->k_comp)) == NULL)
+      (tmp = _node_insert(&this->tree, val.first, this->k_comp)) == NULL)
     return (NULL);
   if ((end = g_map.end(this)) != NULL && end->second == NULL)
   {
@@ -185,7 +203,7 @@ static void		swap(map *this, map *x)
 
 static void		clear(map *this)
 {
-  node_clear(this->tree);
+  _node_clear(this->tree);
   this->tree = NULL;
   g_list.clear((list *)this);
 }
@@ -204,14 +222,14 @@ static p_iterator	find(map *this, const key_type k)
 {
   node			tmp;
 
-  if ((tmp = node_search(this->tree, k, this->k_comp)) != NULL)
+  if ((tmp = _node_search(this->tree, k, this->k_comp)) != NULL)
     return (tmp->content);
   return (NULL);
 }
 
 static size_type	count(map *this, const key_type k)
 {
-  return (node_search(this->tree, k, this->k_comp) != NULL ? 1 : 0);
+  return (_node_search(this->tree, k, this->k_comp) != NULL ? 1 : 0);
 }
 
 static p_iterator	lower_bound(__attribute__((unused))map *this, __attribute__((unused))const key_type k)
