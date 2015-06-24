@@ -2,7 +2,7 @@ SOURCES =	test_deque.c
 
 OBJECTS =	$(SOURCES:.c=.o)
 
-TARGET =	unittest
+TARGET =	unittest.out
 
 COMPILER =	clang
 
