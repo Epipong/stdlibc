@@ -5,7 +5,7 @@
 ** Login   <davy@epitech.net>
 **
 ** Started on  Sat Jun 13 21:32:37 2015 davy
-** Last update Sat Jun 13 21:49:44 2015 davy
+** Last update Wed Jun 24 11:21:17 2015 davy
 */
 
 #include <stdio.h>
@@ -14,7 +14,7 @@
 
 typedef struct s_unittest	unittest;
 
-static deque	g_data = {0};
+static deque	g_test = {0};
 
 struct	s_unittest
 {
@@ -54,13 +54,13 @@ static bool	compare_integer(void *a, void *b)
 
 static void	set_up(unittest *this)
 {
-  DEQUE.constructor(&g_data);
+  DEQUE.constructor(&g_test);
   this->_compare = compare_pointer;
 }
 
 static void	tear_down(unittest *this)
 {
-  DEQUE.destructor(&g_data);
+  DEQUE.destructor(&g_test);
   this->_compare = compare_pointer;
 }
 
@@ -88,9 +88,10 @@ static void	test_push_back(unittest *this)
   int		data;
   size_type	sizes[2] = {0, 1};
 
+  fprintf(stdout, "\tRun %s: l%d", __FUNCTION__, __LINE__ - 5);
   data = 1;
-  DEQUE.push_back(&g_data, &data);
-  sizes[0] = DEQUE.size(&g_data);
+  DEQUE.push_back(&g_test, &data);
+  sizes[0] = DEQUE.size(&g_test);
   this->_compare = compare_integer;
 
   this->assert_equal(this, sizes, sizes + 1);
@@ -101,11 +102,11 @@ static void	test_push_front(unittest *this)
   int		data;
   size_type	sizes[2] = {0, 1};
 
+  fprintf(stdout, "\tRun %s: l%d", __FUNCTION__, __LINE__ - 5);
   data = 1;
-  DEQUE.push_front(&g_data, &data);
-  sizes[0] = DEQUE.size(&g_data);
+  DEQUE.push_front(&g_test, &data);
+  sizes[0] = DEQUE.size(&g_test);
   this->_compare = compare_integer;
-
   this->assert_equal(this, sizes, sizes + 1);
 }
 
@@ -114,15 +115,12 @@ static void	test_at(unittest *this)
   int		data;
   int		res;
 
+  fprintf(stdout, "\tRun %s: l%d", __FUNCTION__, __LINE__ - 5);
   data = 1;
-  DEQUE.push_front(&g_data, &data);
-
-  // valid
-  this->assert_equal(this, DEQUE.at(&g_data, 0), &data);
-
-  // invalid
-  this->assert_not_equal(this, DEQUE.at(&g_data, 1), &data);
-  this->assert_equal(this, DEQUE.at(&g_data, 1), NULL);
+  DEQUE.push_front(&g_test, &data);
+  this->assert_equal(this, DEQUE.at(&g_test, 0), &data);
+  this->assert_not_equal(this, DEQUE.at(&g_test, 1), &data);
+  this->assert_equal(this, DEQUE.at(&g_test, 1), NULL);
 }
 
 static void	test_front(unittest *this)
@@ -130,12 +128,12 @@ static void	test_front(unittest *this)
   int		datas[] = {52, 12, 74, 64};
   int		res;
 
-  DEQUE.push_back(&g_data, &(datas[0]));
-  DEQUE.push_back(&g_data, &(datas[1]));
-  DEQUE.push_back(&g_data, &(datas[2]));
+  fprintf(stdout, "\tRun %s: l%d", __FUNCTION__, __LINE__ - 5);
+  DEQUE.push_back(&g_test, &(datas[0]));
+  DEQUE.push_back(&g_test, &(datas[1]));
+  DEQUE.push_back(&g_test, &(datas[2]));
   this->_compare = compare_integer;
-
-  this->assert_equal(this, DEQUE.front(&g_data), &(datas[0]));
+  this->assert_equal(this, DEQUE.front(&g_test), &(datas[0]));
 }
 
 static void	run(unittest *this)
@@ -147,8 +145,8 @@ static void	run(unittest *this)
   it = (size_t)(&this->__start__) + sizeof(this);
   end = (size_t)(&this->__end__);
   size = (end - it) >> 3;
-  printf("Run %lu test%c.\n", size,
-	 size > 1 ? 's' : '\0');
+  fprintf(stdout, "Run %lu test%c.\n", size,
+	  size > 1 ? 's' : '\0');
   while (it < end)
   {
     this->set_up(this);
@@ -156,9 +154,9 @@ static void	run(unittest *this)
     this->tear_down(this);
     it += sizeof(this);
   }
-  printf("Finished with %d of %d error%c.\n", this->_errors_current,
-	   this->_errors_max,
-	   this->_errors_current > 1 ? 's' : '\0');
+  fprintf(stdout, "Finished with %d of %d error%c.\n", this->_errors_current,
+	  this->_errors_max,
+	  this->_errors_current > 1 ? 's' : '\0');
 }
 
 static unittest g_unittest = {
