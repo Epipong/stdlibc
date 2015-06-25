@@ -1,11 +1,11 @@
 /*
 ** map.c for  in /home/davy/Rendu/stdlibc/stdlibc
-** 
+**
 ** Made by davy tran
 ** Login   <tran_y@epitech.net>
-** 
+**
 ** Started on  Wed Feb  4 19:18:21 2015 davy tran
-** Last update Thu Feb 12 00:33:04 2015 davy tran
+** Last update Sat Jun 20 23:48:16 2015 davy
 */
 
 #include <string.h>
@@ -85,7 +85,7 @@ static void		constructor(map *this, key_compare comp)
 {
   if (this != NULL)
     memset(this, 0, sizeof(*this));
-  this->k_comp = (comp != NULL) ? 
+  this->k_comp = (comp != NULL) ?
     comp : (int (*)(const value_type, const value_type))&strcmp;
   this->v_comp = this->k_comp;
 }
@@ -125,7 +125,7 @@ static p_iterator	end(map *this)
 
 static bool		empty(map *this)
 {
-  return (!this || !this->content || 
+  return (!this || !this->content ||
 	  !this->content->first || !this->content->second);
 }
 
@@ -153,7 +153,7 @@ static void		*at(map *this, const key_type k)
 {
   node			tmp;
 
-  if ((tmp = _node_search(this->tree, k, this->k_comp)) != NULL && 
+  if ((tmp = _node_search(this->tree, k, this->k_comp)) != NULL &&
       tmp->content != NULL)
     return (tmp->content->second);
   return (NULL);
@@ -165,7 +165,7 @@ static p_iterator	insert(map *this, const pair val)
   p_iterator		end;
   node			tmp;
 
-  if (g_map.count(this, val.first) == 1 || 
+  if (g_map.count(this, val.first) == 1 ||
       (tmp = _node_insert(&this->tree, val.first, this->k_comp)) == NULL)
     return (NULL);
   if ((end = g_map.end(this)) != NULL && end->second == NULL)
@@ -232,7 +232,7 @@ static size_type	count(map *this, const key_type k)
   return (_node_search(this->tree, k, this->k_comp) != NULL ? 1 : 0);
 }
 
-static p_iterator	lower_bound(__attribute__((unused))map *this, __attribute__((unused))const key_type k)
+static p_iterator	lower_bound(__attribute__((unused))map *this, const __attribute__((unused))key_type k)
 {
   return (NULL);
 }
@@ -248,23 +248,23 @@ static void		*equal_range(__attribute__((unused))map *this, __attribute__((unuse
 }
 
 struct s_map_class	g_map = {
-  &constructor, 
-  &destructor, 
-  &begin, 
-  &end, 
-  &empty, 
-  &size, 
-  &max_size, 
-  &at, 
-  &insert, 
-  &erase, 
-  &swap, 
-  &clear, 
-  &key_comp, 
-  &value_comp, 
-  &find, 
-  &count, 
-  &lower_bound, 
-  &upper_bound, 
+  &constructor,
+  &destructor,
+  &begin,
+  &end,
+  &empty,
+  &size,
+  &max_size,
+  &at,
+  &insert,
+  &erase,
+  &swap,
+  &clear,
+  &key_comp,
+  &value_comp,
+  &find,
+  &count,
+  &lower_bound,
+  &upper_bound,
   &equal_range
 };

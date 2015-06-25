@@ -1,2 +1,9 @@
-# stdlibc
-A simple std library C++ adapted in C
+#stdlibc
+*A simple standard C library.*
+
+##Contents
+* deque
+* list
+* map
+* string
+* vector

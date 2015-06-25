@@ -1,11 +1,11 @@
 /*
 ** vector.c for vector in /home/davy/Rendu/stdlibc/stdlibc
-** 
+**
 ** Made by davy tran
 ** Login   <tran_y@epitech.net>
-** 
+**
 ** Started on  Wed Feb  4 19:22:11 2015 davy tran
-** Last update Thu Feb 12 00:31:55 2015 davy tran
+** Last update Thu Jun 25 00:49:46 2015 davy
 */
 
 #include <string.h>
@@ -78,7 +78,7 @@ static void		reserve(__attribute__((unused))vector *this, __attribute__((unused)
 
 static void		*at(vector *this, size_type n)
 {
-  return (n >= this->size ? this->content[n] : NULL);
+  return (this->content != NULL ? this->content[n % this->size] : NULL);
 }
 
 static void		*front(vector *this)
@@ -88,10 +88,7 @@ static void		*front(vector *this)
 
 static void		*back(vector *this)
 {
-  size_type		n;
-
-  n = size(this);
-  return (n > 0 ? at(this, n - 1) : NULL);
+  return (this->content != NULL ? at(this, size(this) - 1) : NULL);
 }
 
 static void		assign(__attribute__((unused))vector *this, InputIterator first, InputIterator last)
@@ -103,12 +100,18 @@ static void		assign(__attribute__((unused))vector *this, InputIterator first, In
     INCREMENT_IT(it);
 }
 
-static void		push_back(__attribute__((unused))vector *this, __attribute__((unused))const value_type val)
+static void		push_back(vector *this, const value_type __attribute__((unused))val)
 {
+  size_type		len;
+
+  len = size(this);
+  if ((len + 1) >= max_size(this))
+    resize(this, len + 1);
 }
 
 static void		pop_back(__attribute__((unused))vector *this)
 {
+
 }
 
 static iterator		insert(__attribute__((unused))vector *this, __attribute__((unused))iterator position, __attribute__((unused))const value_type val)
@@ -121,8 +124,9 @@ static iterator		erase(__attribute__((unused))vector *this, __attribute__((unuse
   return (NULL);
 }
 
-static void		swap(__attribute__((unused))vector *this, __attribute__((unused))vector *x)
+static void		swap(vector *this, vector *x)
 {
+  SWAP_PTR(this->content, x->content);
 }
 
 static void		clear(__attribute__((unused))vector *this)
@@ -130,24 +134,24 @@ static void		clear(__attribute__((unused))vector *this)
 }
 
 struct s_vector_class	g_vector = {
-  &constructor, 
-  &destructor, 
-  &begin, 
-  &end, 
-  &size, 
-  &max_size, 
-  &resize, 
-  &capacity, 
-  &empty, 
-  &reserve, 
-  &at, 
-  &front, 
-  &back, 
-  &assign, 
-  &push_back, 
-  &pop_back, 
-  &insert, 
-  &erase, 
-  &swap, 
+  &constructor,
+  &destructor,
+  &begin,
+  &end,
+  &size,
+  &max_size,
+  &resize,
+  &capacity,
+  &empty,
+  &reserve,
+  &at,
+  &front,
+  &back,
+  &assign,
+  &push_back,
+  &pop_back,
+  &insert,
+  &erase,
+  &swap,
   &clear
 };
