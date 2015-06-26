@@ -5,7 +5,7 @@
 ** Login   <davy@epitech.net>
 **
 ** Started on  Sat Jun 13 21:32:37 2015 davy
-** Last update Thu Jun 25 15:58:01 2015 davy
+** Last update Fri Jun 26 17:28:48 2015 davy
 */
 
 #include <stdio.h>
@@ -37,6 +37,10 @@ struct	s_unittest
   void	(*test_push_front)(unittest *this);
   void	(*test_at)(unittest *this);
   void	(*test_front)(unittest *this);
+  void	(*test_back)(unittest *this);
+  void	(*test_assign)(unittest *this);
+  void	(*test_pop_back)(unittest *this);
+  void	(*test_pop_front)(unittest *this);
 
   int	__end__;
 
@@ -50,7 +54,29 @@ static bool	_compare_pointer(void *a, void *b)
 
 static bool	_compare_integer(void *a, void *b)
 {
-  return (*((int *)a) == *((int *)b));
+  bool		is_equal;
+
+  is_equal = *((int *)a) == *((int *)b);
+  if (!is_equal)
+    fprintf(stdout, " %d != %d", *((int *)a), *((int *)b));
+  return (is_equal);
+}
+
+static bool	_compare_deque(void *a, void *b)
+{
+  iterator	it1;
+  iterator	it2;
+
+  it1 = DEQUE.begin((deque *)a);
+  it2 = DEQUE.begin((deque *)b);
+  while (it1 != NULL)
+  {
+    if (!_compare_integer(it1->value, it2->value))
+      return (false);
+    INCREMENT_IT(it1);
+    INCREMENT_IT(it2);
+  }
+  return (true);
 }
 
 static void	_start(char const *function, int line)
@@ -153,8 +179,54 @@ static void	test_front(unittest *this)
   DEQUE.push_back(&g_test, &(datas[0]));
   DEQUE.push_back(&g_test, &(datas[1]));
   DEQUE.push_back(&g_test, &(datas[2]));
+  DEQUE.push_back(&g_test, &(datas[3]));
   this->_compare = _compare_integer;
   this->assert_equal(this, DEQUE.front(&g_test), &(datas[0]));
+  _end();
+}
+
+static void	test_back(unittest *this)
+{
+  int		datas[] = {52, 12, 74, 64};
+  int		res;
+
+  _start(__FUNCTION__, __LINE__ - 5);
+  DEQUE.push_back(&g_test, &(datas[0]));
+  DEQUE.push_back(&g_test, &(datas[1]));
+  DEQUE.push_back(&g_test, &(datas[2]));
+  DEQUE.push_back(&g_test, &(datas[3]));
+  this->_compare = _compare_integer;
+  this->assert_equal(this, DEQUE.back(&g_test), &(datas[3]));
+  _end();
+}
+
+static void	test_assign(unittest *this)
+{
+  deque		d;
+  int		datas[] = {52, 12, 74, 64};
+
+  DEQUE.constructor(&d);
+  _start(__FUNCTION__, __LINE__ - 6);
+  DEQUE.push_back(&d, &(datas[0]));
+  DEQUE.push_back(&d, &(datas[1]));
+  DEQUE.push_back(&d, &(datas[2]));
+  DEQUE.push_back(&d, &(datas[3]));
+  DEQUE.assign(&g_test, DEQUE.begin(&d), DEQUE.end(&d)->forward);
+  this->_compare = _compare_deque;
+  this->assert_equal(this, &g_test, &d);
+  _end();
+  DEQUE.destructor(&d);
+}
+
+static void	test_pop_back(unittest *this)
+{
+  _start(__FUNCTION__, __LINE__ - 5);
+  _end();
+}
+
+static void	test_pop_front(unittest *this)
+{
+  _start(__FUNCTION__, __LINE__ - 5);
   _end();
 }
 
@@ -195,6 +267,10 @@ static unittest g_unittest = {
   &test_push_front,
   &test_at,
   &test_front,
+  &test_back,
+  &test_assign,
+  &test_pop_back,
+  &test_pop_front,
   0,
   &run,
 };

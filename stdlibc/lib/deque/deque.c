@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Tue Apr 29 17:01:50 2014 davy tran
-** Last update Wed Feb 11 23:04:32 2015 davy tran
+** Last update Fri Jun 26 17:29:38 2015 davy
 */
 
 #include <string.h>
@@ -203,7 +203,8 @@ static void		pop_back(deque *this)
 
 static void		pop_front(deque *this)
 {
-  if ((this->content = g_deque.begin(this)) != NULL && this->content->forward != NULL)
+  if ((this->content = g_deque.begin(this)) != NULL &&
+      this->content->forward != NULL)
   {
     this->content = this->content->forward;
     free(this->content->rewind);
@@ -213,7 +214,8 @@ static void		pop_front(deque *this)
     this->content->value = NULL;
 }
 
-static iterator		insert(deque *this, iterator position, const value_type val)
+static iterator		insert(deque *this, iterator position,
+			       const value_type val)
 {
   iterator		it;
   iterator		tmp;
@@ -282,24 +284,24 @@ static void		clear(deque *this)
 }
 
 struct s_deque_class	g_deque = {
-  &constructor, 
-  &destructor, 
-  &begin, 
-  &end, 
-  &size, 
-  &max_size, 
-  &resize, 
-  &empty, 
-  &at, 
-  &front, 
-  &back, 
-  &assign, 
-  &push_back, 
-  &push_front, 
-  &pop_back, 
-  &pop_front, 
-  &insert, 
-  &erase, 
-  &swap, 
+  &constructor,
+  &destructor,
+  &begin,
+  &end,
+  &size,
+  &max_size,
+  &resize,
+  &empty,
+  &at,
+  &front,
+  &back,
+  &assign,
+  &push_back,
+  &push_front,
+  &pop_back,
+  &pop_front,
+  &insert,
+  &erase,
+  &swap,
   &clear
 };
