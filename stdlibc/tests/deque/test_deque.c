@@ -5,7 +5,7 @@
 ** Login   <davy@epitech.net>
 **
 ** Started on  Sat Jun 13 21:32:37 2015 davy
-** Last update Fri Jun 26 17:28:48 2015 davy
+** Last update Mon Jun 29 11:14:49 2015 davy
 */
 
 #include <stdio.h>
@@ -27,9 +27,13 @@ struct	s_unittest
   void	(*set_up)(unittest *this);
   void	(*tear_down)(unittest *this);
 
-  void	(*assert_equal)(unittest *this, void *a, void *b);
-  void	(*assert_not_equal)(unittest *this, void *a, void *b);
-  void	(*assert_in)(unittest *this);
+  void	(*assert_equal)(unittest *this, void *first, void *second);
+  void	(*assert_not_equal)(unittest *this, void *first, void *second);
+  void	(*assert_true)(unittest *this, void *expr);
+  void	(*assert_false)(unittest *this, void *expr);
+  void	(*assert_list_equal)(unittest *this, list *list1, list *list2);
+  void	(*assert_in)(unittest *this, void *member, list *container);
+  void	(*assert_not_in)(unittest *this, void *member, list *container);
 
   int   __start__;
 
@@ -58,7 +62,7 @@ static bool	_compare_integer(void *a, void *b)
 
   is_equal = *((int *)a) == *((int *)b);
   if (!is_equal)
-    fprintf(stdout, " %d != %d", *((int *)a), *((int *)b));
+    fprintf(stdout, " %d != %d;", *((int *)a), *((int *)b));
   return (is_equal);
 }
 
@@ -103,9 +107,9 @@ static void	tear_down(unittest *this)
   this->_compare = _compare_pointer;
 }
 
-static void	assert_equal(unittest *this, void *a, void *b)
+static void	assert_equal(unittest *this, void *first, void *second)
 {
-  if (!this->_compare(a, b))
+  if (!this->_compare(first, second))
   {
     ++this->_errors_current;
     g_ok = false;
@@ -113,9 +117,9 @@ static void	assert_equal(unittest *this, void *a, void *b)
   ++this->_errors_max;
 }
 
-static void	assert_not_equal(unittest *this, void *a, void *b)
+static void	assert_not_equal(unittest *this, void *first, void *second)
 {
-  if (this->_compare(a, b))
+  if (this->_compare(first, second))
   {
     ++this->_errors_current;
     g_ok = false;
@@ -123,7 +127,36 @@ static void	assert_not_equal(unittest *this, void *a, void *b)
   ++this->_errors_max;
 }
 
-static void	assert_in(unittest *this)
+static void	assert_true(unittest *this, void *expr)
+{
+  bool		is_true;
+
+  is_true = *((bool *)expr);
+  if (!is_true)
+  {
+    ++this->_errors_current;
+    g_ok = false;
+    fprintf(stdout, " %p is %s", expr, is_true ? "true" : "false");
+  }
+  ++this->_errors_max;
+}
+
+static void	assert_false(unittest *this, void *expr)
+{
+  ++this->_errors_max;
+}
+
+static void	assert_list_equal(unittest *this, list *list1, list *list2)
+{
+  ++this->_errors_max;
+}
+
+static void	assert_in(unittest *this, void *member, list *list2)
+{
+  ++this->_errors_max;
+}
+
+static void	assert_not_in(unittest *this, void *member, list *list2)
 {
   ++this->_errors_max;
 }
@@ -220,13 +253,26 @@ static void	test_assign(unittest *this)
 
 static void	test_pop_back(unittest *this)
 {
-  _start(__FUNCTION__, __LINE__ - 5);
+  int		datas[] = {52, 12, 74, 64};
+
+  _start(__FUNCTION__, __LINE__ - 4);
+  DEQUE.push_back(&g_test, &(datas[0]));
+  DEQUE.push_back(&g_test, &(datas[1]));
+  DEQUE.push_back(&g_test, &(datas[2]));
+  DEQUE.push_back(&g_test, &(datas[3]));
+  DEQUE.pop_back(&g_test);
+  DEQUE.pop_back(&g_test);
+  DEQUE.pop_back(&g_test);
+  DEQUE.pop_back(&g_test);
+  this->_compare = _compare_integer;
+  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){0});
+  this->assert_true(this, (bool []){DEQUE.empty(&g_test)});
   _end();
 }
 
 static void	test_pop_front(unittest *this)
 {
-  _start(__FUNCTION__, __LINE__ - 5);
+  _start(__FUNCTION__, __LINE__ - 2);
   _end();
 }
 
@@ -238,7 +284,7 @@ static void	run(unittest *this)
 
   it = (size_t)(&this->__start__) + sizeof(this);
   end = (size_t)(&this->__end__);
-  size = (end - it) >> 3;
+  size = (end - it) / sizeof(this);
   fprintf(stdout, "Run %lu test%c.\n", size,
 	  size > 1 ? 's' : '\0');
   while (it < end)
@@ -261,7 +307,11 @@ static unittest g_unittest = {
   &tear_down,
   &assert_equal,
   &assert_not_equal,
+  &assert_true,
+  &assert_false,
+  &assert_list_equal,
   &assert_in,
+  &assert_not_in,
   0,
   &test_push_back,
   &test_push_front,
