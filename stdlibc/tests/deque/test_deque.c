@@ -5,7 +5,7 @@
 ** Login   <davy@epitech.net>
 **
 ** Started on  Sat Jun 13 21:32:37 2015 davy
-** Last update Wed Jul  1 00:36:31 2015 davy
+** Last update Fri Jul  3 22:05:56 2015 davy
 */
 
 #include <stdio.h>
@@ -27,9 +27,13 @@ struct	s_unittest
   void	(*set_up)(unittest *this);
   void	(*tear_down)(unittest *this);
 
-  void	(*assert_equal)(unittest *this, void *a, void *b);
-  void	(*assert_not_equal)(unittest *this, void *a, void *b);
-  void	(*assert_in)(unittest *this);
+  void	(*assert_equal)(unittest *this, void *first, void *second);
+  void	(*assert_not_equal)(unittest *this, void *first, void *second);
+  void	(*assert_true)(unittest *this, void *expr);
+  void	(*assert_false)(unittest *this, void *expr);
+  void	(*assert_list_equal)(unittest *this, list *list1, list *list2);
+  void	(*assert_in)(unittest *this, void *member, list *container);
+  void	(*assert_not_in)(unittest *this, void *member, list *container);
 
   int   __start__;
 
@@ -54,7 +58,12 @@ static bool	_compare_pointer(void *a, void *b)
 
 static bool	_compare_integer(void *a, void *b)
 {
-  return (*((int *)a) == *((int *)b));
+  bool		is_equal;
+
+  is_equal = *((int *)a) == *((int *)b);
+  if (!is_equal)
+    fprintf(stdout, " %d != %d;", *((int *)a), *((int *)b));
+  return (is_equal);
 }
 
 static bool	_compare_deque(void *a, void *b)
@@ -97,29 +106,65 @@ static void	tear_down(unittest *this)
   DEQUE.destructor(&g_test);
 }
 
-static void	assert_equal(unittest *this, void *a, void *b)
+static void	assert_equal(unittest *this, void *first, void *second)
 {
-  if (!this->_compare(a, b))
+  if (!this->_compare(first, second))
   {
-    fprintf(stdout, "\n\t\t%d != %d", *((int *)a), *((int *)b));
     ++this->_errors_current;
     g_ok = false;
   }
   ++this->_errors_max;
 }
 
-static void	assert_not_equal(unittest *this, void *a, void *b)
+static void	assert_not_equal(unittest *this, void *first, void *second)
 {
-  if (this->_compare(a, b))
+  if (this->_compare(first, second))
   {
-    fprintf(stdout, "\n\t\t%d == %d", *((int *)a), *((int *)b));
     ++this->_errors_current;
     g_ok = false;
   }
   ++this->_errors_max;
 }
 
-static void	assert_in(unittest *this)
+static void	assert_true(unittest *this, void *expr)
+{
+  bool		is_true;
+
+  is_true = *((bool *)expr);
+  if (!is_true)
+  {
+    ++this->_errors_current;
+    g_ok = false;
+    fprintf(stdout, " %p is %s", expr, is_true ? "true" : "false");
+  }
+  ++this->_errors_max;
+}
+
+static void	assert_false(unittest *this, void *expr)
+{
+  bool		is_false;
+
+  is_false = !(*((bool *)expr));
+  if (is_false)
+  {
+    ++this->_errors_current;
+    g_ok = false;
+    fprintf(stdout, " %p is %s", expr, is_false ? "true" : "false");
+  }
+  ++this->_errors_max;
+}
+
+static void	assert_list_equal(unittest *this, list *list1, list *list2)
+{
+  ++this->_errors_max;
+}
+
+static void	assert_in(unittest *this, void *member, list *list2)
+{
+  ++this->_errors_max;
+}
+
+static void	assert_not_in(unittest *this, void *member, list *list2)
 {
   ++this->_errors_max;
 }
@@ -289,7 +334,11 @@ static unittest g_unittest = {
   &tear_down,
   &assert_equal,
   &assert_not_equal,
+  &assert_true,
+  &assert_false,
+  &assert_list_equal,
   &assert_in,
+  &assert_not_in,
   0,
   &test_push_back,
   &test_push_front,

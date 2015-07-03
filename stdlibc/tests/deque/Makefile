@@ -1,11 +1,11 @@
 ##
-## Makefile for  in /home/davy/Templates/stdlibc/stdlibc
+## Makefile for unittest in /home/davy/Templates/stdlibc/stdlibc
 ## 
 ## Made by davy
-## Login   <davy@epitech.net>
+## Login   <tran_y@epitech.net>
 ## 
 ## Started on  Fri Jun 26 16:17:23 2015 davy
-## Last update Fri Jun 26 16:17:24 2015 davy
+## Last update Mon Jun 29 10:13:37 2015 davy
 ##
 
 SOURCES =	test_deque.c
