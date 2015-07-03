@@ -5,7 +5,7 @@
 ** Login   <davy@epitech.net>
 **
 ** Started on  Sat Jun 13 21:32:37 2015 davy
-** Last update Fri Jun 26 17:28:48 2015 davy
+** Last update Wed Jul  1 00:36:31 2015 davy
 */
 
 #include <stdio.h>
@@ -54,12 +54,7 @@ static bool	_compare_pointer(void *a, void *b)
 
 static bool	_compare_integer(void *a, void *b)
 {
-  bool		is_equal;
-
-  is_equal = *((int *)a) == *((int *)b);
-  if (!is_equal)
-    fprintf(stdout, " %d != %d", *((int *)a), *((int *)b));
-  return (is_equal);
+  return (*((int *)a) == *((int *)b));
 }
 
 static bool	_compare_deque(void *a, void *b)
@@ -87,7 +82,7 @@ static void	_start(char const *function, int line)
 
 static void	_end(void)
 {
-  fprintf(stdout, " (%s)\n", g_ok ? "ok" : "bad");
+  fprintf(stdout, "%s\n", g_ok ? " [\033[32mok\033[0m]" : "");
   g_ok = true;
 }
 
@@ -100,13 +95,13 @@ static void	set_up(unittest *this)
 static void	tear_down(unittest *this)
 {
   DEQUE.destructor(&g_test);
-  this->_compare = _compare_pointer;
 }
 
 static void	assert_equal(unittest *this, void *a, void *b)
 {
   if (!this->_compare(a, b))
   {
+    fprintf(stdout, "\n\t\t%d != %d", *((int *)a), *((int *)b));
     ++this->_errors_current;
     g_ok = false;
   }
@@ -117,6 +112,7 @@ static void	assert_not_equal(unittest *this, void *a, void *b)
 {
   if (this->_compare(a, b))
   {
+    fprintf(stdout, "\n\t\t%d == %d", *((int *)a), *((int *)b));
     ++this->_errors_current;
     g_ok = false;
   }
@@ -214,19 +210,51 @@ static void	test_assign(unittest *this)
   DEQUE.assign(&g_test, DEQUE.begin(&d), DEQUE.end(&d)->forward);
   this->_compare = _compare_deque;
   this->assert_equal(this, &g_test, &d);
+  this->_compare = _compare_integer;
+  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
+  this->assert_equal(this, DEQUE.at(&g_test, 0), (int []){52});
+  this->assert_equal(this, DEQUE.at(&g_test, 1), (int []){12});
   _end();
   DEQUE.destructor(&d);
 }
 
 static void	test_pop_back(unittest *this)
 {
-  _start(__FUNCTION__, __LINE__ - 5);
+  int		datas[] = {52, 12, 74, 64};
+
+  _start(__FUNCTION__, __LINE__ - 4);
+  DEQUE.push_back(&g_test, &(datas[0]));
+  DEQUE.push_back(&g_test, &(datas[1]));
+  DEQUE.push_back(&g_test, &(datas[2]));
+  DEQUE.push_back(&g_test, &(datas[3]));
+  this->_compare = _compare_integer;
+  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
+  DEQUE.pop_back(&g_test);
+  DEQUE.pop_back(&g_test);
+  this->assert_not_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
+  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){2});
+  this->assert_equal(this, DEQUE.at(&g_test, 0), (int []){52});
+  this->assert_equal(this, DEQUE.at(&g_test, 1), (int []){12});
   _end();
 }
 
 static void	test_pop_front(unittest *this)
 {
-  _start(__FUNCTION__, __LINE__ - 5);
+  int		datas[] = {52, 12, 74, 64};
+
+  _start(__FUNCTION__, __LINE__ - 4);
+  DEQUE.push_back(&g_test, &(datas[0]));
+  DEQUE.push_back(&g_test, &(datas[1]));
+  DEQUE.push_back(&g_test, &(datas[2]));
+  DEQUE.push_back(&g_test, &(datas[3]));
+  this->_compare = _compare_integer;
+  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
+  DEQUE.pop_front(&g_test);
+  DEQUE.pop_front(&g_test);
+  this->assert_not_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
+  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){2});
+  this->assert_equal(this, DEQUE.at(&g_test, 0), (int []){74});
+  this->assert_equal(this, DEQUE.at(&g_test, 1), (int []){64});
   _end();
 }
 
@@ -238,9 +266,9 @@ static void	run(unittest *this)
 
   it = (size_t)(&this->__start__) + sizeof(this);
   end = (size_t)(&this->__end__);
-  size = (end - it) >> 3;
-  fprintf(stdout, "Run %lu test%c.\n", size,
-	  size > 1 ? 's' : '\0');
+  size = (end - it) / sizeof(this);
+  fprintf(stdout, "Run %lu test%c in %s file.\n", size,
+	  size > 1 ? 's' : '\0', __FILE__);
   while (it < end)
   {
     this->set_up(this);
@@ -248,9 +276,9 @@ static void	run(unittest *this)
     this->tear_down(this);
     it += sizeof(this);
   }
-  fprintf(stdout, "Finished with %d of %d error%c.\n", this->_errors_current,
-	  this->_errors_max,
-	  this->_errors_current > 1 ? 's' : '\0');
+  fprintf(stdout, "Finished with %d error%c of %d.\n", this->_errors_current,
+	  this->_errors_current > 1 ? 's' : '\0',
+	  this->_errors_max);
 }
 
 static unittest g_unittest = {
