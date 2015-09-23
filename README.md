@@ -35,7 +35,8 @@ int main(void)
   destructor(d);
   destructor(m);
   return (0);
-}```
+}
+```
 
 > results will display
 
