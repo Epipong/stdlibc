@@ -5,11 +5,12 @@
 ** Login   <davy@epitech.net>
 **
 ** Started on  Sat Jun 13 21:32:37 2015 davy
-** Last update Fri Jul  3 22:05:56 2015 davy
+** Last update Fri Jul 17 14:54:55 2015 davy
 */
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 #include "std.h"
 
 typedef struct s_unittest	unittest;
@@ -21,7 +22,6 @@ struct	s_unittest
 {
   int	_errors_current;
   int	_errors_max;
-
   bool	(*_compare)(void *a, void *b);
 
   void	(*set_up)(unittest *this);
@@ -36,7 +36,6 @@ struct	s_unittest
   void	(*assert_not_in)(unittest *this, void *member, list *container);
 
   int   __start__;
-
   void	(*test_push_back)(unittest *this);
   void	(*test_push_front)(unittest *this);
   void	(*test_at)(unittest *this);
@@ -45,7 +44,6 @@ struct	s_unittest
   void	(*test_assign)(unittest *this);
   void	(*test_pop_back)(unittest *this);
   void	(*test_pop_front)(unittest *this);
-
   int	__end__;
 
   void	(*run)(unittest *this);
@@ -114,6 +112,7 @@ static void	assert_equal(unittest *this, void *first, void *second)
     g_ok = false;
   }
   ++this->_errors_max;
+  assert(!this->_compare(first, second));
 }
 
 static void	assert_not_equal(unittest *this, void *first, void *second)

@@ -1,11 +1,11 @@
 /*
 ** list.c for list in /home/davy/Rendu/stdlibc/stdlibc
-** 
+**
 ** Made by davy tran
 ** Login   <tran_y@epitech.net>
-** 
+**
 ** Started on  Wed Feb  4 19:21:25 2015 davy tran
-** Last update Thu Feb 12 00:18:40 2015 davy tran
+** Last update Thu Sep 10 16:59:13 2015 davy
 */
 
 #include <string.h>
@@ -249,8 +249,8 @@ static void		resize(list *this, size_type n)
 
 static void		clear(list *this)
 {
-  iterator			it;
-  iterator			forward;
+  iterator		it;
+  iterator		forward;
 
   if (g_list.size(this) == 0)
     return ;
@@ -373,30 +373,30 @@ static void		reverse(list *this)
 }
 
 struct s_list_class	g_list = {
-  &constructor, 
-  &destructor, 
-  &begin, 
-  &end, 
-  &empty, 
-  &size, 
-  &max_size, 
-  &front, 
-  &back, 
-  &assign, 
-  &push_front, 
-  &pop_front, 
-  &push_back, 
-  &pop_back, 
-  &insert, 
-  &erase, 
-  &swap, 
-  &resize, 
-  &clear, 
-  &splice, 
-  &remove, 
-  &remove_if, 
-  &unique, 
-  &merge, 
-  &sort, 
+  &constructor,
+  &destructor,
+  &begin,
+  &end,
+  &empty,
+  &size,
+  &max_size,
+  &front,
+  &back,
+  &assign,
+  &push_front,
+  &pop_front,
+  &push_back,
+  &pop_back,
+  &insert,
+  &erase,
+  &swap,
+  &resize,
+  &clear,
+  &splice,
+  &remove,
+  &remove_if,
+  &unique,
+  &merge,
+  &sort,
   &reverse
 };

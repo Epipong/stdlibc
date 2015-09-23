@@ -1,11 +1,11 @@
 /*
 ** helper.h for helper in /home/davy/Rendu/stdlibc/stdlibc
-** 
+**
 ** Made by davy tran
 ** Login   <tran_y@epitech.net>
-** 
+**
 ** Started on  Wed Feb  4 14:54:13 2015 davy tran
-** Last update Thu Feb 12 01:00:22 2015 davy tran
+** Last update Thu Sep 17 15:27:13 2015 davy
 */
 
 #ifndef GLOBAL_H_
@@ -17,7 +17,7 @@
 typedef void *	InputIterator;
 typedef void *	pointer;
 typedef void *	value_type;
-typedef char *	key_type;
+typedef void *	key_type;
 typedef void *	first_type;
 typedef void *	second_type;
 

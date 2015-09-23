@@ -5,7 +5,7 @@
 ## Login   <tran_y@epitech.net>
 ## 
 ## Started on  Wed Feb  4 14:20:50 2015 davy tran
-## Last update Thu Feb 12 00:27:58 2015 davy tran
+## Last update Tue Aug  4 12:10:50 2015 davy
 ##
 
 SOURCES		=	lib/std.c \
@@ -24,7 +24,7 @@ GENERATOR	=	ranlib
 
 COMPILER	=	clang
 
-CFLAGS		+=	-Wall -Wextra -Werror -D_BSD_SOURCE -D_GNU_SOURCE -std=c99
+CFLAGS		+=	-Wall -Wextra -Werror -D_BSD_SOURCE -D_GNU_SOURCE
 CFLAGS		+=	-Iincludes
 
 NAME	=	libstd.a

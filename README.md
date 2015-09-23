@@ -1,5 +1,5 @@
 #stdlibc
-*A simple standard C library.*
+*A simple standard C library with STL like.*
 
 ##Contents
 * deque

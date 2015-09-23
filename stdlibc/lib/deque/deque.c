@@ -5,13 +5,13 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Tue Apr 29 17:01:50 2014 davy tran
-** Last update Fri Jun 26 17:29:38 2015 davy
+** Last update Tue Aug  4 12:12:58 2015 davy
 */
 
 #include <string.h>
 #include "deque.h"
 
-static int const	g_default_val = 0;
+static int const	default_value = 0;
 
 static void		constructor(deque *this)
 {
@@ -58,32 +58,27 @@ static size_type	size(deque *this)
   iterator		it;
   size_type		n;
 
-  it = g_deque.begin(this);
-  n = 0;
-  while (it != NULL)
-  {
-    ++n;
-    INCREMENT_IT(it);
-  }
+  for (it = begin(this), n = 0; it != NULL; INCREMENT_IT(it), ++n)
+    ;
   return (n);
 }
 
 static size_type	max_size(deque *this)
 {
-  return (g_deque.size(this));
+  return (size(this));
 }
 
 static void		resize(deque *this, size_type n)
 {
   size_type		i;
 
-  if ((i = g_deque.size(this)) == n)
+  if ((i = size(this)) == n)
     return ;
   else if (i < n)
   {
     while (i < n)
     {
-      g_deque.push_back(this, (void *)(&g_default_val));
+      g_deque.push_back(this, (void *)(&default_value));
       ++i;
     }
   }
@@ -106,7 +101,7 @@ static void		*at(deque *this, size_type n)
 {
   iterator		it;
 
-  it = g_deque.begin(this);
+  it = begin(this);
   while (it != NULL && n != 0)
   {
     INCREMENT_IT(it);

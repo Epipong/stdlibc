@@ -1,11 +1,11 @@
 /*
 ** map.h for map in /home/davy/Rendu/stdlibc/stdlibc
-** 
+**
 ** Made by davy tran
 ** Login   <tran_yepitech.net>
-** 
+**
 ** Started on  Wed Feb  4 14:45:23 2015 davy tran
-** Last update Wed Feb  4 19:15:14 2015 davy tran
+** Last update Wed Sep 23 16:16:16 2015 davy
 */
 
 #ifndef MAP_H_
@@ -39,7 +39,7 @@ struct		s_map
 
 struct		s_map_class
 {
-  void		(*constructor)(map *this, key_compare comp);
+  void		(*constructor)(map *this);
   void		(*destructor)(map *this);
 
   p_iterator	(*begin)(map *this);
@@ -51,7 +51,7 @@ struct		s_map_class
 
   void		*(*at)(map *this, const key_type k);
 
-  p_iterator	(*insert)(map *this, const pair val);
+  p_iterator	(*insert)(map *this, first_type first, second_type second);
   p_iterator	(*erase)(map *this, p_iterator position);
   void		(*swap)(map *this, map *x);
   void		(*clear)(map *this);

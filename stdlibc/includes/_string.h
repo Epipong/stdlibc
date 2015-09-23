@@ -1,11 +1,11 @@
 /*
 ** _string.h for string in /home/davy/Rendu/stdlibc/stdlibc
-** 
+**
 ** Made by davy tran
 ** Login   <tran_yepitech.net>
-** 
+**
 ** Started on  Wed Feb  4 14:44:34 2015 davy tran
-** Last update Wed Feb  4 19:15:27 2015 davy tran
+** Last update Wed Sep 23 15:53:52 2015 davy
 */
 
 #ifndef _STRING_H_
@@ -42,7 +42,7 @@ struct		s_string
 
 struct		s_string_class
 {
-  void		(*constructor)(string *this, char const *s);
+  void		(*constructor)(string *this);
   void		(*destructor)(string *this);
 
   void		*(*begin)(string *this);
