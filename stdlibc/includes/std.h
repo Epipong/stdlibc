@@ -5,7 +5,7 @@
 ** Login   <tran_yepitech.net>
 **
 ** Started on  Wed Feb  4 14:45:10 2015 davy tran
-** Last update Thu Sep 24 17:57:09 2015 davy
+** Last update Fri Sep 25 16:36:59 2015 davy
 */
 
 #ifndef STD_H_
@@ -35,7 +35,7 @@ extern namespace	std;
 # define MAP	(*std.map)
 # define VECTOR	(*std.vector)
 
-# ifdef _GENERIC
+# ifdef GENERIC
 
 #  define constructor(x)			\
   _Generic((x),					\
@@ -87,6 +87,14 @@ extern namespace	std;
 	   map: MAP.end,			\
 	   vector: VECTOR.end)(&x)
 
+#  define size(x)				\
+  _Generic((x),					\
+	   string: STRING.size,			\
+	   list: LIST.size,			\
+	   deque: DEQUE.size,			\
+	   map: MAP.size,			\
+	   vector: VECTOR.size)(&x)
+
 #  define clear(x)				\
   _Generic((x),					\
 	   string: STRING.clear,		\
@@ -101,6 +109,13 @@ extern namespace	std;
 	   deque: DEQUE.at,			\
 	   map: MAP.at,				\
 	   vector: VECTOR.at)(&x, y)
+
+#  define assign(x, y, z)			\
+  _Generic((x),					\
+	   string: STRING.assign,		\
+	   list: LIST.assign,			\
+	   deque: DEQUE.assign,			\
+	   vector: VECTOR.assign)(&x, y, z)
 
 #  define insert(x, y, z)			\
   _Generic((x),					\
@@ -145,6 +160,6 @@ extern namespace	std;
 	   deque: DEQUE.back,			\
 	   vector: VECTOR.back)(&x)
 
-# endif /* !_GENERIC */
+# endif /* !GENERIC */
 
 #endif /* !STD_H_ */

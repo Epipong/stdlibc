@@ -5,10 +5,10 @@
 ** Login   <davy@epitech.net>
 **
 ** Started on  Sat Jun 13 21:32:37 2015 davy
-** Last update Thu Sep 24 17:52:11 2015 davy
+** Last update Fri Sep 25 17:18:32 2015 davy
 */
 
-#define _GENERIC
+#define GENERIC
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -37,7 +37,7 @@ struct	s_unittest
   void	(*assert_in)(unittest *this, void *member, list *container);
   void	(*assert_not_in)(unittest *this, void *member, list *container);
 
-  int   __start__;
+  int const   __start__;
   void	(*test_push_back)(unittest *this);
   void	(*test_push_front)(unittest *this);
   void	(*test_at)(unittest *this);
@@ -46,7 +46,11 @@ struct	s_unittest
   void	(*test_assign)(unittest *this);
   void	(*test_pop_back)(unittest *this);
   void	(*test_pop_front)(unittest *this);
-  int	__end__;
+  void	(*test_insert)(unittest *this);
+  void	(*test_erase)(unittest *this);
+  void	(*test_swap)(unittest *this);
+  void	(*test_clear)(unittest *this);
+  int const	__end__;
 
   void	(*run)(unittest *this);
 };
@@ -89,7 +93,7 @@ static void	_start(char const *function, int line)
 
 static void	_end(void)
 {
-  fprintf(stdout, "%s\n", g_ok ? " [\033[32mok\033[0m]" : "");
+  fprintf(stdout, " [\033[%s\033[0m]\n", g_ok ? "32mok" : "31merror");
   g_ok = true;
 }
 
@@ -112,7 +116,7 @@ static void	assert_equal(unittest *this, void *first, void *second)
     g_ok = false;
   }
   ++this->_errors_max;
-  assert(this->_compare(first, second));
+  this->_compare(first, second);
 }
 
 static void	assert_not_equal(unittest *this, void *first, void *second)
@@ -176,7 +180,7 @@ static void	test_push_back(unittest *this)
   _start(__FUNCTION__, __LINE__ - 5);
   data = 1;
   push_back(g_test, &data);
-  sizes[0] = DEQUE.size(&g_test);
+  sizes[0] = size(g_test);
   this->_compare = _compare_integer;
   this->assert_equal(this, sizes, sizes + 1);
   _end();
@@ -190,7 +194,7 @@ static void	test_push_front(unittest *this)
   _start(__FUNCTION__, __LINE__ - 5);
   data = 1;
   push_front(g_test, &data);
-  sizes[0] = DEQUE.size(&g_test);
+  sizes[0] = size(g_test);
   this->_compare = _compare_integer;
   this->assert_equal(this, sizes, sizes + 1);
   _end();
@@ -217,9 +221,9 @@ static void	test_front(unittest *this)
 
   _start(__FUNCTION__, __LINE__ - 5);
   push_back(g_test, datas);
-  push_back(g_test, &(datas[1]));
-  push_back(g_test, &(datas[2]));
-  push_back(g_test, &(datas[3]));
+  push_back(g_test, datas + 1);
+  push_back(g_test, datas + 2);
+  push_back(g_test, datas + 3);
   this->_compare = _compare_integer;
   this->assert_equal(this, front(g_test), datas);
   _end();
@@ -232,11 +236,11 @@ static void	test_back(unittest *this)
 
   _start(__FUNCTION__, __LINE__ - 5);
   push_back(g_test, datas);
-  push_back(g_test, &(datas[1]));
-  push_back(g_test, &(datas[2]));
-  push_back(g_test, &(datas[3]));
+  push_back(g_test, datas + 1);
+  push_back(g_test, datas + 2);
+  push_back(g_test, datas + 3);
   this->_compare = _compare_integer;
-  this->assert_equal(this, back(g_test), &(datas[3]));
+  this->assert_equal(this, back(g_test), (int []){64});
   _end();
 }
 
@@ -248,14 +252,14 @@ static void	test_assign(unittest *this)
   constructor(d);
   _start(__FUNCTION__, __LINE__ - 6);
   push_back(d, datas);
-  push_back(d, &(datas[1]));
-  push_back(d, &(datas[2]));
-  push_back(d, &(datas[3]));
-  DEQUE.assign(&g_test, begin(d), end(d)->forward);
+  push_back(d, datas + 1);
+  push_back(d, datas + 2);
+  push_back(d, datas + 3);
+  assign(g_test, begin(d), end(d)->forward);
   this->_compare = _compare_deque;
   this->assert_equal(this, &g_test, &d);
   this->_compare = _compare_integer;
-  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
+  this->assert_equal(this, (int []){size(g_test)}, (int []){4});
   this->assert_equal(this, at(g_test, 0), (int []){52});
   this->assert_equal(this, at(g_test, 1), (int []){12});
   _end();
@@ -272,11 +276,11 @@ static void	test_pop_back(unittest *this)
   push_back(g_test, datas + 2);
   push_back(g_test, datas + 3);
   this->_compare = _compare_integer;
-  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
+  this->assert_equal(this, (int []){size(g_test)}, (int []){4});
   pop_back(g_test);
   pop_back(g_test);
-  this->assert_not_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
-  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){2});
+  this->assert_not_equal(this, (int []){size(g_test)}, (int []){4});
+  this->assert_equal(this, (int []){size(g_test)}, (int []){2});
   this->assert_equal(this, at(g_test, 0), (int []){52});
   this->assert_equal(this, at(g_test, 1), (int []){12});
   _end();
@@ -292,13 +296,37 @@ static void	test_pop_front(unittest *this)
   push_back(g_test, datas + 2);
   push_back(g_test, datas + 3);
   this->_compare = _compare_integer;
-  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
+  this->assert_equal(this, (int []){size(g_test)}, (int []){4});
   pop_front(g_test);
   pop_front(g_test);
-  this->assert_not_equal(this, (int []){DEQUE.size(&g_test)}, (int []){4});
-  this->assert_equal(this, (int []){DEQUE.size(&g_test)}, (int []){2});
+  this->assert_not_equal(this, (int []){size(g_test)}, (int []){4});
+  this->assert_equal(this, (int []){size(g_test)}, (int []){2});
   this->assert_equal(this, at(g_test, 0), (int []){74});
   this->assert_equal(this, at(g_test, 1), (int []){64});
+  _end();
+}
+
+static void	test_insert(unittest *this)
+{
+  _start(__FUNCTION__, __LINE__ - 2);
+  _end();
+}
+
+static void	test_erase(unittest *this)
+{
+  _start(__FUNCTION__, __LINE__ - 2);
+  _end();
+}
+
+static void	test_swap(unittest *this)
+{
+  _start(__FUNCTION__, __LINE__ - 2);
+  _end();
+}
+
+static void	test_clear(unittest *this)
+{
+  _start(__FUNCTION__, __LINE__ - 2);
   _end();
 }
 
@@ -347,6 +375,10 @@ static unittest g_unittest = {
   &test_assign,
   &test_pop_back,
   &test_pop_front,
+  &test_insert,
+  &test_erase,
+  &test_swap,
+  &test_clear,
   0,
   &run,
 };
