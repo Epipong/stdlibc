@@ -8,8 +8,8 @@
 ** Last update Wed Feb  4 19:15:27 2015 davy tran
 */
 
-#ifndef _STRING_H_
-# define _STRING_H_
+#ifndef M_STRING_H_
+# define M_STRING_H_
 
 # include <stdlib.h>
 # include <stdbool.h>
@@ -77,4 +77,4 @@ extern struct s_string_class	g_string;
 
 string		*to_string(int val);
 
-#endif /* !_STRING_H_ */
+#endif /* !M_STRING_H_ */
