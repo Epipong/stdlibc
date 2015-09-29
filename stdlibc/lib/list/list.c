@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Wed Feb  4 19:21:25 2015 davy tran
-** Last update Thu Sep 10 16:59:13 2015 davy
+** Last update Tue Sep 29 16:15:14 2015 davy
 */
 
 #include <string.h>
@@ -153,8 +153,6 @@ static void		push_back(list *this, const value_type val)
   if ((it = calloc(sizeof(*it), 1)) == NULL)
     exit(EXIT_FAILURE);
   it->value = val;
-  it->rewind = NULL;
-  it->forward = NULL;
   if (end != NULL)
   {
     end->forward = it;

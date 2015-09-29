@@ -5,7 +5,7 @@
 ** Login   <tran_yepitech.net>
 **
 ** Started on  Wed Feb  4 14:45:10 2015 davy tran
-** Last update Fri Sep 25 16:36:59 2015 davy
+** Last update Tue Sep 29 11:54:59 2015 davy
 */
 
 #ifndef STD_H_
@@ -87,6 +87,14 @@ extern namespace	std;
 	   map: MAP.end,			\
 	   vector: VECTOR.end)(&x)
 
+#  define empty(x)				\
+  _Generic((x),					\
+	   deque: DEQUE.empty,			\
+	   list: LIST.empty,			\
+	   map: MAP:empty			\
+	   string: STRING.empty			\
+	   vector: VECTOR.empty)(&x)
+
 #  define size(x)				\
   _Generic((x),					\
 	   string: STRING.size,			\
@@ -94,6 +102,22 @@ extern namespace	std;
 	   deque: DEQUE.size,			\
 	   map: MAP.size,			\
 	   vector: VECTOR.size)(&x)
+
+#  define max_size(x)				\
+  _Generic((x),					\
+	   list: LIST.max_size,			\
+	   deque: DEQUE.max_size,		\
+	   map: MAP.max_size,			\
+	   vector: VECTOR.max_size)(&x)
+
+#  define resize(x)				\
+	   string: STRING.resize,		\
+	   deque: DEQUE.resize,			\
+	   vector: VECTOR.resize)(&x)
+
+#  define capacity(x)				\
+  _Generic((x),					\
+	   string: STRING.capacity)(&x)
 
 #  define clear(x)				\
   _Generic((x),					\
