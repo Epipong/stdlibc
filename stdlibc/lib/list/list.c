@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Wed Feb  4 19:21:25 2015 davy tran
-** Last update Tue Sep 29 16:15:14 2015 davy
+** Last update Wed Sep 30 16:35:11 2015 davy
 */
 
 #include <string.h>
@@ -38,7 +38,7 @@ static iterator		begin(list *this)
 
   it = this->content;
   while (it != NULL && it->rewind != NULL)
-    DECREMENT_IT(it);
+    previous(it);
   return (it);
 }
 
@@ -48,7 +48,7 @@ static iterator		end(list *this)
 
   it = this->content;
   while (it != NULL && it->forward != NULL)
-    INCREMENT_IT(it);
+    next(it);
   return (it);
 }
 
@@ -67,14 +67,14 @@ static size_type	size(list *this)
   while (it != NULL)
   {
     ++n;
-    INCREMENT_IT(it);
+    next(it);
   }
   return (n);
 }
 
 static size_type	max_size(list *this)
 {
-  return (size(this));
+  return ((size_type)this);
 }
 
 static void		*front(list *this)
@@ -102,7 +102,7 @@ static void		assign(list *this, iterator first, iterator last)
   while (it != NULL && it != last)
   {
     g_list.push_back(this, it->value);
-    INCREMENT_IT(it);
+    next(it);
   }
 }
 
@@ -187,7 +187,7 @@ static iterator		insert(list *this, iterator position, const value_type val)
   elem->forward = NULL;
   it = g_list.begin(this);
   while (it != NULL && it->forward != NULL && it != position)
-    INCREMENT_IT(it);
+    next(it);
   elem->forward = it->forward;
   elem->rewind = it;
   if (it->forward != NULL)
@@ -203,7 +203,7 @@ static iterator		erase(list *this, iterator position)
 
   it = g_list.begin(this);
   while (it != NULL && it != position)
-    INCREMENT_IT(it);
+    next(it);
   if (it != position)
     return (NULL);
   tmp = it->forward;
@@ -257,7 +257,7 @@ static void		clear(list *this)
   if ((it = g_list.begin(this))->forward != NULL)
   {
     it->value = NULL;
-    INCREMENT_IT(it);
+    next(it);
   }
   while (it != NULL)
   {
@@ -276,7 +276,7 @@ static void		splice(list *this, iterator position, list *x)
     return ;
   it = g_list.begin(this);
   while (it != NULL && it != position && it->forward != position)
-    INCREMENT_IT(it);
+    next(it);
   if (it == NULL)
     return ;
   tmp = it->forward;
@@ -310,7 +310,7 @@ static void		remove_if(list *this, Predicate pred)
   {
     if (pred(it != NULL ? it->value : NULL))
       g_list.erase(this, it);
-    INCREMENT_IT(it);
+    next(it);
   }
 }
 
@@ -325,7 +325,7 @@ static void		unique(list *this, BinaryPredicate binary_pred)
     tmp = it->forward;
     while (tmp != NULL)
       tmp = binary_pred(it->value, tmp->value) ? erase(this, tmp) : tmp->forward;
-    INCREMENT_IT(it);
+    next(it);
   }
 }
 
@@ -348,9 +348,9 @@ static void		sort(list *this, Compare comp)
     {
       if (comp(it->value, tmp->value))
 	SWAP_PTR(it->value, tmp->value);
-      INCREMENT_IT(tmp);
+      next(tmp);
     }
-    INCREMENT_IT(it);
+    next(it);
   }
 }
 
@@ -364,8 +364,8 @@ static void		reverse(list *this)
   while (it1 != NULL && it2 != NULL)
   {
     SWAP_PTR(it1->value, it2->value);
-    if ((INCREMENT_IT(it1)) == it2 ||
-	(DECREMENT_IT(it2)) == it1)
+    if ((next(it1)) == it2 ||
+	(previous(it2)) == it1)
       return ;
   }
 }

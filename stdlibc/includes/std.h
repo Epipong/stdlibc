@@ -5,7 +5,7 @@
 ** Login   <tran_yepitech.net>
 **
 ** Started on  Wed Feb  4 14:45:10 2015 davy tran
-** Last update Tue Sep 29 11:54:59 2015 davy
+** Last update Wed Sep 30 17:25:23 2015 davy
 */
 
 #ifndef STD_H_
@@ -117,6 +117,7 @@ extern namespace	std;
 
 #  define capacity(x)				\
   _Generic((x),					\
+	   vector: VECTOR.capacity,		\
 	   string: STRING.capacity)(&x)
 
 #  define clear(x)				\
@@ -183,6 +184,12 @@ extern namespace	std;
 	   list: LIST.back,			\
 	   deque: DEQUE.back,			\
 	   vector: VECTOR.back)(&x)
+
+# define reserve(x, y)				\
+  _Generic((x),					\
+	   vector: VECTOR.reserve)(&x, y)
+
+# define get(x, type) (*((type *)(x)->value))
 
 # endif /* !GENERIC */
 

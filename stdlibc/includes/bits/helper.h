@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Wed Feb  4 14:54:13 2015 davy tran
-** Last update Thu Sep 17 15:27:13 2015 davy
+** Last update Wed Sep 30 15:42:55 2015 davy
 */
 
 #ifndef GLOBAL_H_
@@ -14,7 +14,6 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
-typedef void *	InputIterator;
 typedef void *	pointer;
 typedef void *	value_type;
 typedef void *	key_type;
