@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Tue Apr 29 17:01:50 2014 davy tran
-** Last update Tue Aug  4 12:12:58 2015 davy
+** Last update Wed Sep 30 16:35:05 2015 davy
 */
 
 #include <string.h>
@@ -39,7 +39,7 @@ static iterator		begin(deque *this)
 
   it = this->content;
   while (it != NULL && it->rewind != NULL)
-    DECREMENT_IT(it);
+    previous(it);
   return (it);
 }
 
@@ -49,7 +49,7 @@ static iterator		end(deque *this)
 
   it = this->content;
   while (it != NULL && it->forward != NULL)
-    INCREMENT_IT(it);
+    next(it);
   return (it);
 }
 
@@ -58,14 +58,14 @@ static size_type	size(deque *this)
   iterator		it;
   size_type		n;
 
-  for (it = begin(this), n = 0; it != NULL; INCREMENT_IT(it), ++n)
+  for (it = begin(this), n = 0; it != NULL; next(it), ++n)
     ;
   return (n);
 }
 
 static size_type	max_size(deque *this)
 {
-  return (size(this));
+  return ((size_type)this);
 }
 
 static void		resize(deque *this, size_type n)
@@ -104,7 +104,7 @@ static void		*at(deque *this, size_type n)
   it = begin(this);
   while (it != NULL && n != 0)
   {
-    INCREMENT_IT(it);
+    next(it);
     --n;
   }
   return (it != NULL ? it->value : NULL);
@@ -135,7 +135,7 @@ static void		assign(deque *this, InputIterator first, InputIterator last)
   while (it != NULL && it != last)
   {
     g_deque.push_back(this, it->value);
-    INCREMENT_IT(it);
+    next(it);
   }
 }
 
@@ -222,7 +222,7 @@ static iterator		insert(deque *this, iterator position,
   it->forward = NULL;
   tmp = g_deque.begin(this);
   while (tmp != NULL && tmp->forward != NULL && tmp != position)
-    INCREMENT_IT(tmp);
+    next(tmp);
   it->forward = tmp->forward;
   it->rewind = tmp;
   if (tmp->forward != NULL)
@@ -238,7 +238,7 @@ static iterator		erase(deque *this, iterator position)
 
   it = g_deque.begin(this);
   while (it != NULL && it != position)
-    INCREMENT_IT(it);
+    next(it);
   if (it != position)
     return (NULL);
   tmp = it->forward;
@@ -268,7 +268,7 @@ static void		clear(deque *this)
   if ((it = g_deque.begin(this))->forward != NULL)
   {
     it->value = NULL;
-    INCREMENT_IT(it);
+    next(it);
   }
   while (it != NULL)
   {

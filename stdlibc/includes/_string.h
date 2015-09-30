@@ -5,7 +5,7 @@
 ** Login   <tran_yepitech.net>
 **
 ** Started on  Wed Feb  4 14:44:34 2015 davy tran
-** Last update Wed Sep 23 15:53:52 2015 davy
+** Last update Tue Sep 29 10:46:14 2015 davy
 */
 
 #ifndef M_STRING_H_
@@ -58,14 +58,14 @@ struct		s_string_class
 
   char const	*(*append)(string *this, char const *str);
   void		(*push_back)(string *this, char c);
-  char const	*(*assign)(string *this, char const *str);
+  char const	*(*assign)(string *this, char const *str, size_t n);
   char const	*(*insert)(string *this, size_t pos, char const *str);
   char const	*(*erase)(string *this, size_t pos, size_t len);
   char const	*(*replace)(string *this, size_t pos, size_t len, char const *str);
   void		(*swap)(string *this, string *str);
 
   char const	*(*c_str)(string *this);
-  size_t	(*copy)(string *this, char* s, size_t len, size_t pos);
+  size_t	(*copy)(string *this, char *s, size_t len, size_t pos);
   size_t	(*find)(string *this, char const *str, size_t pos);
   char const	*(*substr)(string *this, size_t pos, size_t len);
   int		(*compare)(string *this, char const *str);

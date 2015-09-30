@@ -1,0 +1,74 @@
+.TH STRING 3 "2015-09-29"
+.SH NAME
+string, to_string \- string class
+.SH SYNOPSIS
+.B #include <_string.h>
+.sp
+.BI "void constructor(string *" this ");"
+.br
+.BI "void destructor(string *" this ");"
+.sp
+.BI "void *begin(string *" this ");"
+.br
+.BI "void *end(string *" this ");"
+.sp
+.BI "size_t size(string *" this ");"
+.br
+.BI "void resize(string *" this ", size_t " n ");"
+.br
+.BI "size_t capacity(string *" this ");"
+.br
+.BI "void clean(string *" this ");"
+.br
+.BI "void empty(string *" this ");"
+.sp
+.BI "char at(string *" this ", size_t " pos ");"
+.sp
+.BI "char const *append(string *" this ", char const *" str ");"
+.br
+.BI "void push_back(string *" this ", char " c ");"
+.br
+.BI "char const *assign(string *" this ", char const *" str ", size_t " n ");"
+.br
+.BI "char const *insert(string *" this ", size_t " pos ", char const *" str ");"
+.br
+.BI "char const *erase(string *" this ", size_t " pos ", size_t " len ", char const *" str ");"
+.br
+.BI "char const *replace(string *" this ", size_t " pos ", size_t " len ", char const *" str ");"
+.br
+.BI "void swap(string *" this ", string *" str ");"
+.sp
+.BI "char const *c_str(string *" this ");"
+.br
+.BI "size_t copy(string *" this ", char *" s ", size_t " len ", size_t " pos ");"
+.br
+.BI "size_t find(string *" this ", char const *" str ", size_t " pos ");"
+.br
+.BI "char const *substr(string *" this ", size_t " pos ", size_t " len ");"
+.br
+.BI "int compare(string *" this ", char const *" str ");"
+.sp
+.BI "string *to_string(int " val ");"
+
+.nf
+typedef struct s_string
+{
+  char		*str;	/* Data string */
+  size_type	size;	/* Size of string */
+  size_type	length;	/* Size capacity */
+} string;
+.fi
+
+.SH DESCRIPTION
+Strings are objects that represent sequences of characters.
+
+The standard
+.BR "string class"
+provides support for such objects with an interface similar to that of a standard container of bytes, but adding features specifically designed to operate with strings of single-byte characters.
+
+The
+.BR "string class"
+is an instantiation of the basic_string class template that uses char (i.e., bytes) as its character type, with its default char_traits and allocator types (see basic_string for more info on the template).
+
+.SH NOTES
+This class handles bytes independently of the encoding used: If used to handle sequences of multi-byte or variable-length characters (such as UTF-8), all members of this class (such as length or size), as well as its iterators, will still operate in terms of bytes (not actual encoded characters).

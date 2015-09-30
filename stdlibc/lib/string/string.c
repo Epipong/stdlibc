@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Wed Feb  4 19:21:59 2015 davy tran
-** Last update Wed Sep 23 16:01:23 2015 davy
+** Last update Wed Sep 30 15:14:51 2015 davy
 */
 
 #include <string.h>
@@ -95,7 +95,8 @@ static void		push_back(string *this, char c)
   g_string.append(this, (char const []){c, '\0'});
 }
 
-static char const	*assign(string *this, char const *str)
+static char const	*assign(string *this, char const *str,
+				__attribute__((unused))size_t n)
 {
   if (str == NULL)
     return (this->str);
@@ -220,6 +221,6 @@ string		*to_string(int val)
     return (NULL);
   g_string.constructor(str);
   sprintf(buff, "%d", val);
-  g_string.assign(str, buff);
+  g_string.append(str, buff);
   return (str);
 }

@@ -5,7 +5,7 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Wed Feb  4 19:18:21 2015 davy tran
-** Last update Wed Sep 23 16:18:03 2015 davy
+** Last update Wed Sep 30 16:35:17 2015 davy
 */
 
 #include <string.h>
@@ -141,7 +141,7 @@ static p_iterator	begin(map *this)
 
   it = this->content;
   while (it != NULL && it->rewind != NULL)
-    DECREMENT_IT(it);
+    previous(it);
   return (it);
 }
 
@@ -151,7 +151,7 @@ static p_iterator	end(map *this)
 
   it = this->content;
   while (it != NULL && it->forward != NULL)
-    INCREMENT_IT(it);
+    next(it);
   return (it);
 }
 
@@ -171,14 +171,14 @@ static size_type	size(map *this)
   while (it != NULL)
   {
     ++n;
-    INCREMENT_IT(it);
+    next(it);
   }
   return (n);
 }
 
 static size_type	max_size(map *this)
 {
-  return (size(this));
+  return ((size_type)this);
 }
 
 static void		*at(map *this, const key_type k)

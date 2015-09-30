@@ -1,11 +1,11 @@
 /*
 ** iterator.h for iterator in /home/davy/Rendu/stdlibc/stdlibc
-** 
+**
 ** Made by davy tran
 ** Login   <tran_yepitech.net>
-** 
+**
 ** Started on  Wed Feb  4 14:44:46 2015 davy tran
-** Last update Thu Feb 12 00:27:43 2015 davy tran
+** Last update Wed Sep 30 15:43:17 2015 davy
 */
 
 #ifndef ITERATOR_H_
@@ -16,6 +16,8 @@
 typedef struct s_iterator *	iterator;
 typedef struct s_p_iterator *	p_iterator;
 typedef struct s_node *		node;
+
+typedef iterator		InputIterator;
 
 /*
 ** Node structure use for binary tree.
@@ -66,7 +68,7 @@ struct		s_p_iterator
   key_type	first;
 };
 
-# define INCREMENT_IT(x)	((x) = (x)->forward)
-# define DECREMENT_IT(x)	((x) = (x)->rewind)
+# define next(x)		((x) = (x)->forward)
+# define previous(x)		((x) = (x)->rewind)
 
 #endif /* !ITERATOR_H_ */
