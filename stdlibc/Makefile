@@ -27,12 +27,15 @@ COMPILER	=	clang
 CFLAGS		+=	-Wall -Wextra -Werror -D_BSD_SOURCE -D_GNU_SOURCE
 CFLAGS		+=	-Iincludes
 
+DEBUG		=	N
+
+ifeq ($(DEBUG), Y)
+CFLAGS		+=	-g3
+endif
+
 NAME	=	libstd.a
 
 all:		$(NAME)
-
-debug:		CFLAGS += -g3
-debug:		re
 
 $(NAME):	$(OBJECTS)
 		$(ARCHIVE) rc $(NAME) $(OBJECTS)

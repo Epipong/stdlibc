@@ -11,9 +11,9 @@
 #include <string.h>
 #include "deque.h"
 
-static int const	default_value = 0;
+static int const  default_value = 0;
 
-static void		constructor(deque *this)
+static void   constructor(deque *this)
 {
   if (this == NULL)
     return ;
@@ -23,7 +23,7 @@ static void		constructor(deque *this)
   this->size = 0;
 }
 
-static void		destructor(deque *this)
+static void destructor(deque *this)
 {
   if (this == NULL)
     return ;
@@ -33,9 +33,9 @@ static void		destructor(deque *this)
   this->content = NULL;
 }
 
-static iterator		begin(deque *this)
+static iterator begin(deque *this)
 {
-  iterator		it;
+  iterator      it;
 
   it = this->content;
   while (it != NULL && it->rewind != NULL)
@@ -43,9 +43,9 @@ static iterator		begin(deque *this)
   return (it);
 }
 
-static iterator		end(deque *this)
+static iterator end(deque *this)
 {
-  iterator		it;
+  iterator      it;
 
   it = this->content;
   while (it != NULL && it->forward != NULL)
@@ -53,24 +53,24 @@ static iterator		end(deque *this)
   return (it);
 }
 
-static size_type	size(deque *this)
+static size_type  size(deque *this)
 {
-  iterator		it;
-  size_type		n;
+  iterator    it;
+  size_type    n;
 
   for (it = begin(this), n = 0; it != NULL; next(it), ++n)
     ;
   return (n);
 }
 
-static size_type	max_size(deque *this)
+static size_type  max_size(deque *this)
 {
   return ((size_type)this);
 }
 
-static void		resize(deque *this, size_type n)
+static void    resize(deque *this, size_type n)
 {
-  size_type		i;
+  size_type    i;
 
   if ((i = size(this)) == n)
     return ;
@@ -92,14 +92,14 @@ static void		resize(deque *this, size_type n)
   }
 }
 
-static bool		empty(deque *this)
+static bool    empty(deque *this)
 {
   return (this == NULL || this->content == NULL);
 }
 
-static void		*at(deque *this, size_type n)
+static void    *at(deque *this, size_type n)
 {
-  iterator		it;
+  iterator    it;
 
   it = begin(this);
   while (it != NULL && n != 0)
@@ -110,25 +110,25 @@ static void		*at(deque *this, size_type n)
   return (it != NULL ? it->value : NULL);
 }
 
-static void		*front(deque *this)
+static void    *front(deque *this)
 {
-  iterator		it;
+  iterator    it;
 
   it = g_deque.begin(this);
   return (it != NULL ? it->value : NULL);
 }
 
-static void		*back(deque *this)
+static void    *back(deque *this)
 {
-  iterator		it;
+  iterator    it;
 
   it = g_deque.end(this);
   return (it != NULL ? it->value : NULL);
 }
 
-static void		assign(deque *this, InputIterator first, InputIterator last)
+static void    assign(deque *this, InputIterator first, InputIterator last)
 {
-  iterator		it;
+  iterator    it;
 
   g_deque.clear(this);
   it = first;
@@ -139,10 +139,10 @@ static void		assign(deque *this, InputIterator first, InputIterator last)
   }
 }
 
-static void		push_back(deque *this, const value_type val)
+static void    push_back(deque *this, const value_type val)
 {
-  iterator		it;
-  iterator		tmp;
+  iterator    it;
+  iterator    tmp;
 
   if (g_deque.end(this)->value == NULL)
   {
@@ -161,9 +161,9 @@ static void		push_back(deque *this, const value_type val)
   }
 }
 
-static void		push_front(deque *this, const value_type val)
+static void    push_front(deque *this, const value_type val)
 {
-  iterator		it;
+  iterator    it;
 
   if (g_deque.begin(this)->value == NULL)
   {
@@ -183,9 +183,9 @@ static void		push_front(deque *this, const value_type val)
   }
 }
 
-static void		pop_back(deque *this)
+static void    pop_back(deque *this)
 {
-  iterator		it;
+  iterator    it;
 
   if ((it = g_deque.end(this)) != NULL && it->rewind != NULL)
   {
@@ -196,7 +196,7 @@ static void		pop_back(deque *this)
     it->value = NULL;
 }
 
-static void		pop_front(deque *this)
+static void    pop_front(deque *this)
 {
   if ((this->content = g_deque.begin(this)) != NULL &&
       this->content->forward != NULL)
@@ -209,11 +209,11 @@ static void		pop_front(deque *this)
     this->content->value = NULL;
 }
 
-static iterator		insert(deque *this, iterator position,
-			       const value_type val)
+static iterator    insert(deque *this, iterator position,
+             const value_type val)
 {
-  iterator		it;
-  iterator		tmp;
+  iterator    it;
+  iterator    tmp;
 
   if ((it = calloc(sizeof(*it), 1)) == NULL)
     exit(EXIT_FAILURE);
@@ -231,10 +231,10 @@ static iterator		insert(deque *this, iterator position,
   return (NULL);
 }
 
-static iterator		erase(deque *this, iterator position)
+static iterator    erase(deque *this, iterator position)
 {
-  iterator		it;
-  iterator		tmp;
+  iterator    it;
+  iterator    tmp;
 
   it = g_deque.begin(this);
   while (it != NULL && it != position)
@@ -250,16 +250,16 @@ static iterator		erase(deque *this, iterator position)
   return (tmp);
 }
 
-static void		swap(deque *this, deque *x)
+static void    swap(deque *this, deque *x)
 {
   SWAP_PTR(this->content, x->content);
   SWAP_NBR(this->size, x->size);
 }
 
-static void		clear(deque *this)
+static void    clear(deque *this)
 {
-  iterator			it;
-  iterator			forward;
+  iterator      it;
+  iterator      forward;
 
   if (g_deque.size(this) == 0)
     return ;
@@ -278,7 +278,7 @@ static void		clear(deque *this)
   }
 }
 
-struct s_deque_class	g_deque = {
+struct s_deque_class  g_deque = {
   &constructor,
   &destructor,
   &begin,

@@ -34,9 +34,10 @@ static void	test_vector()
       printf("capacity changed: %zu\n", sz);
     }
   }
+  printf("size: %lu\n", size(foo));
   sz = capacity(bar);
-  reserve(bar, 100);
   printf("making bar grow:\n");
+  printf("bar.content -> %p\n", bar.content);
   for (int i = 0; i < 100; ++i)
   {
     push_back(bar, (int []){i});
@@ -52,6 +53,25 @@ static void	test_vector()
 
 int		main(void)
 {
-  test_vector();
+  //test_vector();
+  deque  l;
+  vector v;
+
+  constructor(l);
+  constructor(v);
+  push_back(l, "toto");
+  push_back(l, "titi");
+  push_back(l, "tutu");
+  push_back(v, put(4, int));
+  push_back(v, put(67, int));
+  push_back(v, put(32, int));
+  foreach(row, l)
+    printf("%s\n", row->value);
+  foreach(row, v) // through vector as iterator
+    printf("%d\n", get(row, int));
+  for (int i = size(v) - 1; i != -1; --i) // through vector as array
+    printf("%d\n", get(v.content[i], int));
+  destructor(l);
+  destructor(v);
   return 0;
 }
