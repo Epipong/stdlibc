@@ -136,7 +136,10 @@ extern namespace  std;
     map: MAP.clear,       \
     vector: VECTOR.clear)(&x)
 
-#  define at(x, y)        \
+#  define at(x, y, type)  \
+  *((type *)(_at(x, y)))
+
+#  define _at(x, y)       \
   _Generic((x),           \
     string: STRING.at,    \
     deque: DEQUE.at,      \

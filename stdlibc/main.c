@@ -51,9 +51,39 @@ static void	test_vector()
   destructor(bar);
 }
 
+int   sample()
+{
+  deque d;
+  map m;
+
+  constructor(d);
+  constructor(m);
+
+  insert(m, "deque", &d);  // insert deque into map.
+  insert(m, "int", put(9, int)); // insert int into map.
+  push_back(d, "42");  // push back 42 into deque.
+
+  printf("m['%s'].front() = %s\n", "deque", front(at(m, "deque", deque)));
+  printf("m['%s'] = %d\n", "int", at(m, "int", int));
+
+  push_back(d, "21");
+
+  foreach(row, d)
+  {
+    printf("row = %p\n",  row);
+    printf("row->value = %p\n", row->value);
+    printf("%s\n", row);
+  }
+
+  destructor(d);
+  destructor(m);
+  return (0);
+}
+
 int		main(void)
 {
   //test_vector();
+  return sample();
   deque  l;
   vector v;
 
@@ -67,9 +97,9 @@ int		main(void)
   push_back(v, put(32, int));
   foreach(row, l)
     printf("%s\n", row->value);
-  foreach(row, v) // through vector as iterator
+  foreach(row, v) // through vector as an iterator
     printf("%d\n", get(row, int));
-  for (int i = size(v) - 1; i != -1; --i) // through vector as array
+  for (int i = size(v) - 1; i != -1; --i) // through vector as an array
     printf("%d\n", get(v.content[i], int));
   destructor(l);
   destructor(v);
