@@ -5,11 +5,21 @@
 ** Login   <tran_y@epitech.net>
 **
 ** Started on  Wed Feb  4 19:18:21 2015 davy tran
-** Last update Sat Jun 20 23:48:16 2015 davy
+** Last update Wed Sep 30 16:35:17 2015 davy
 */
 
 #include <string.h>
 #include "map.h"
+
+static void	*ptrdup(void *ptr, size_t size)
+{
+  void		*new;
+
+  if ((new = calloc(size + 1, 1)) == NULL)
+    return (NULL);
+  memcpy(new, ptr, size);
+  return (new);
+}
 
 /*
 ** Private method for search node with key compare method.
@@ -19,7 +29,7 @@
 **	k (key_type) -- Key comparison.
 **	comp (key_compare) -- Method comparison between key.
 */
-static node	_node_search(node tree, const key_type k, key_compare comp)
+static node	_node_key_search(node tree, const key_type k, key_compare comp)
 {
   int		n;
 
@@ -28,9 +38,32 @@ static node	_node_search(node tree, const key_type k, key_compare comp)
   if ((n = comp(tree->key, k)) == 0)
     return (tree);
   else if (n < 0)
-    return (_node_search(tree->left, k, comp));
+    return (_node_key_search(tree->left, k, comp));
   else
-    return (_node_search(tree->right, k, comp));
+    return (_node_key_search(tree->right, k, comp));
+}
+
+/*
+** Private method for search node with value compare method.
+**
+** Attributes:
+**	tree (node) -- Binary tree instance.
+**	v (value_type) -- Value comparison.
+**	comp (value_compare) -- Method comparison between value.
+*/
+static node	_node_value_search(node tree, const value_type v,
+				   value_compare comp)
+{
+  int		n;
+
+  if (tree == NULL || tree->content == NULL || tree->content->second)
+    return (NULL);
+  if ((n = comp(tree->content->second, v)) == 0)
+    return (tree);
+  else if (n < 0)
+    return (_node_value_search(tree->left, v, comp));
+  else
+    return (_node_value_search(tree->right, v, comp));
 }
 
 /*
@@ -51,7 +84,7 @@ static node	_node_insert(node *tree, const key_type k, key_compare comp)
   {
     if ((tmp = calloc(sizeof(*tmp), 1)) == NULL)
       exit(EXIT_FAILURE);
-    if ((tmp->key = strdup(k)) == NULL)
+    if ((tmp->key = ptrdup(k, 32)) == NULL)
       exit(EXIT_FAILURE);
     return ((*tree = tmp));
   }
@@ -81,13 +114,12 @@ static void	_node_clear(node tree)
   }
 }
 
-static void		constructor(map *this, key_compare comp)
+static void		constructor(map *this)
 {
   if (this != NULL)
     memset(this, 0, sizeof(*this));
-  this->k_comp = (comp != NULL) ?
-    comp : (int (*)(const value_type, const value_type))&strcmp;
-  this->v_comp = this->k_comp;
+  this->k_comp = (key_compare)strcmp;
+  this->v_comp = (key_compare)strcmp;
 }
 
 static void		destructor(map *this)
@@ -109,7 +141,7 @@ static p_iterator	begin(map *this)
 
   it = this->content;
   while (it != NULL && it->rewind != NULL)
-    DECREMENT_IT(it);
+    previous(it);
   return (it);
 }
 
@@ -119,7 +151,7 @@ static p_iterator	end(map *this)
 
   it = this->content;
   while (it != NULL && it->forward != NULL)
-    INCREMENT_IT(it);
+    next(it);
   return (it);
 }
 
@@ -139,44 +171,44 @@ static size_type	size(map *this)
   while (it != NULL)
   {
     ++n;
-    INCREMENT_IT(it);
+    next(it);
   }
   return (n);
 }
 
 static size_type	max_size(map *this)
 {
-  return (size(this));
+  return ((size_type)this);
 }
 
 static void		*at(map *this, const key_type k)
 {
   node			tmp;
 
-  if ((tmp = _node_search(this->tree, k, this->k_comp)) != NULL &&
+  if ((tmp = _node_key_search(this->tree, k, this->k_comp)) != NULL &&
       tmp->content != NULL)
     return (tmp->content->second);
   return (NULL);
 }
 
-static p_iterator	insert(map *this, const pair val)
+static p_iterator	insert(map *this, first_type first, second_type second)
 {
   p_iterator		it;
   p_iterator		end;
   node			tmp;
 
-  if (g_map.count(this, val.first) == 1 ||
-      (tmp = _node_insert(&this->tree, val.first, this->k_comp)) == NULL)
+  if (g_map.count(this, first) == 1 ||
+      (tmp = _node_insert(&this->tree, first, this->k_comp)) == NULL)
     return (NULL);
   if ((end = g_map.end(this)) != NULL && end->second == NULL)
   {
-    end->second = val.second;
+    end->second = second;
     return (end);
   }
   if ((it = calloc(sizeof(*it), 1)) == NULL)
     exit(EXIT_FAILURE);
   it->first = tmp->key;
-  it->second = val.second;
+  it->second = second;
   if (end != NULL)
   {
     end->forward = it;
@@ -218,18 +250,18 @@ static value_compare	value_comp(map *this)
   return (this->v_comp);
 }
 
-static p_iterator	find(map *this, const key_type k)
+static p_iterator	find(map *this, const value_type v)
 {
   node			tmp;
 
-  if ((tmp = _node_search(this->tree, k, this->k_comp)) != NULL)
+  if ((tmp = _node_value_search(this->tree, v, this->v_comp)) != NULL)
     return (tmp->content);
   return (NULL);
 }
 
-static size_type	count(map *this, const key_type k)
+static size_type	count(map *this, const value_type v)
 {
-  return (_node_search(this->tree, k, this->k_comp) != NULL ? 1 : 0);
+  return (_node_value_search(this->tree, v, this->v_comp) != NULL ? 1 : 0);
 }
 
 static p_iterator	lower_bound(__attribute__((unused))map *this, const __attribute__((unused))key_type k)

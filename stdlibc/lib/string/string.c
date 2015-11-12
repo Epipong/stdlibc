@@ -1,22 +1,21 @@
 /*
 ** string.c for string in /home/davy/Rendu/stdlibc/stdlibc
-** 
+**
 ** Made by davy tran
 ** Login   <tran_y@epitech.net>
-** 
+**
 ** Started on  Wed Feb  4 19:21:59 2015 davy tran
-** Last update Wed Feb 11 23:05:20 2015 davy tran
+** Last update Wed Sep 30 15:14:51 2015 davy
 */
 
 #include <string.h>
 #include <stdio.h>
 #include "_string.h"
 
-static void		constructor(string *this, char const *s)
+static void		constructor(string *this)
 {
   if (this != NULL)
     memset(this, 0, sizeof(*this));
-  g_string.assign(this, s);
 }
 
 static void		destructor(string *this)
@@ -78,7 +77,7 @@ static bool		empty(string *this)
 
 static char		at(string *this, size_t pos)
 {
-  return (this->str != NULL && pos < g_string.size(this) ? 
+  return (this->str != NULL && pos < g_string.size(this) ?
 	  this->str[pos] : '\0');
 }
 
@@ -96,7 +95,8 @@ static void		push_back(string *this, char c)
   g_string.append(this, (char const []){c, '\0'});
 }
 
-static char const	*assign(string *this, char const *str)
+static char const	*assign(string *this, char const *str,
+				__attribute__((unused))size_t n)
 {
   if (str == NULL)
     return (this->str);
@@ -188,27 +188,27 @@ static int		compare(string *this, char const *str)
 }
 
 struct s_string_class	g_string = {
-  &constructor, 
-  &destructor, 
-  &begin, 
-  &end, 
-  &size, 
-  &resize, 
-  &capacity, 
-  &clear, 
-  &empty, 
-  &at, 
-  &append, 
-  &push_back, 
-  &assign, 
-  &insert, 
-  &erase, 
-  &replace, 
-  &swap, 
-  &c_str, 
-  &copy, 
-  &find, 
-  &substr, 
+  &constructor,
+  &destructor,
+  &begin,
+  &end,
+  &size,
+  &resize,
+  &capacity,
+  &clear,
+  &empty,
+  &at,
+  &append,
+  &push_back,
+  &assign,
+  &insert,
+  &erase,
+  &replace,
+  &swap,
+  &c_str,
+  &copy,
+  &find,
+  &substr,
   &compare
 };
 
@@ -217,10 +217,10 @@ string		*to_string(int val)
   char		buff[BUFFER_LENGTH + 1];
   string	*str;
 
-  if ((str = malloc(sizeof(*str))) == NULL)
+  if ((str = calloc(sizeof(*str), 1)) == NULL)
     return (NULL);
-  memset(buff, 0, sizeof(buff));
+  g_string.constructor(str);
   sprintf(buff, "%d", val);
-  g_string.constructor(str, buff);
+  g_string.append(str, buff);
   return (str);
 }
