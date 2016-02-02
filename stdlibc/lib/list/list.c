@@ -13,7 +13,7 @@
 
 static int const	g_default_val = 0;
 
-static void		constructor(list *this)
+static void constructor(list *this)
 {
   if (this != NULL)
     memset(this, 0, sizeof(*this));
@@ -22,7 +22,7 @@ static void		constructor(list *this)
   this->size = 0;
 }
 
-static void		destructor(list *this)
+static void destructor(list *this)
 {
   if (this == NULL)
     return ;
@@ -32,19 +32,18 @@ static void		destructor(list *this)
   this->content = NULL;
 }
 
-static iterator		begin(list *this)
+static iterator begin(list *this)
 {
-  iterator		it;
+  iterator      it;
 
-  it = this->content;
-  while (it != NULL && it->rewind != NULL)
-    previous(it);
+  for (it = this->content; it != NULL && it->rewind != NULL; previous(it))
+    ;
   return (it);
 }
 
-static iterator		end(list *this)
+static iterator end(list *this)
 {
-  iterator		it;
+  iterator      it;
 
   it = this->content;
   while (it != NULL && it->forward != NULL)
@@ -52,63 +51,52 @@ static iterator		end(list *this)
   return (it);
 }
 
-static bool		empty(list *this)
+static bool empty(list *this)
 {
   return (!this || !this->content || !this->content->value);
 }
 
-static size_type	size(list *this)
+static size_type size(list *this)
 {
-  iterator		it;
-  size_type		n;
+  size_type		   n;
 
-  it = g_list.begin(this);
   n = 0;
-  while (it != NULL)
-  {
-    ++n;
-    next(it);
-  }
+  for (iterator it = g_list.begin(this); it != NULL; next(it), ++n)
+    ;
   return (n);
 }
 
-static size_type	max_size(list *this)
+static size_type  max_size(list *this)
 {
   return ((size_type)this);
 }
 
-static void		*front(list *this)
+static void *front(list *this)
 {
-  iterator		it;
+  iterator  it;
 
   it = begin(this);
   return (it != NULL ? it->value : NULL);
 }
 
-static void		*back(list *this)
+static void *back(list *this)
 {
-  iterator		it;
+  iterator  it;
 
   it = end(this);
   return (it != NULL ? it->value : NULL);
 }
 
-static void		assign(list *this, iterator first, iterator last)
+static void assign(list *this, iterator first, iterator last)
 {
-  iterator		it;
-
   g_list.clear(this);
-  it = first;
-  while (it != NULL && it != last)
-  {
+  for (iterator it = first; it != NULL && it != last; next(it))
     g_list.push_back(this, it->value);
-    next(it);
-  }
 }
 
-static void		push_front(list *this, const value_type val)
+static void push_front(list *this, const value_type val)
 {
-  iterator		it;
+  iterator  it;
 
   if (g_list.begin(this)->value == NULL)
   {
@@ -128,9 +116,9 @@ static void		push_front(list *this, const value_type val)
   }
 }
 
-static void		pop_front(list *this)
+static void pop_front(list *this)
 {
-  if ((this->content = g_list.begin(this)) != NULL && this->content->forward != NULL)
+  if ((this->content = begin(this)) != NULL && this->content->forward != NULL)
   {
     this->content = this->content->forward;
     free(this->content->rewind);
@@ -140,10 +128,10 @@ static void		pop_front(list *this)
     this->content->value = NULL;
 }
 
-static void		push_back(list *this, const value_type val)
+static void push_back(list *this, const value_type val)
 {
-  iterator		it;
-  iterator		end;
+  iterator  it;
+  iterator  end;
 
   if ((end = g_list.end(this)) != NULL && end->value == NULL)
   {
@@ -162,9 +150,9 @@ static void		push_back(list *this, const value_type val)
     this->content = it;
 }
 
-static void		pop_back(list *this)
+static void pop_back(list *this)
 {
-  iterator		it;
+  iterator  it;
 
   if ((it = g_list.end(this)) != NULL && it->rewind != NULL)
   {
@@ -175,19 +163,18 @@ static void		pop_back(list *this)
     it->value = NULL;
 }
 
-static iterator		insert(list *this, iterator position, const value_type val)
+static iterator insert(list *this, iterator position, const value_type val)
 {
-  iterator		elem;
-  iterator		it;
+  iterator      elem;
+  iterator      it;
 
   if ((elem = calloc(sizeof(*elem), 1)) == NULL)
     exit(EXIT_FAILURE);
   elem->value = val;
   elem->rewind = NULL;
   elem->forward = NULL;
-  it = g_list.begin(this);
-  while (it != NULL && it->forward != NULL && it != position)
-    next(it);
+  for (it = g_list.begin(this);
+       it != NULL && it->forward != NULL && it != position; next(it));
   elem->forward = it->forward;
   elem->rewind = it;
   if (it->forward != NULL)
@@ -196,14 +183,13 @@ static iterator		insert(list *this, iterator position, const value_type val)
   return (NULL);
 }
 
-static iterator		erase(list *this, iterator position)
+static iterator erase(list *this, iterator position)
 {
-  iterator		it;
-  iterator		tmp;
+  iterator      it;
+  iterator      tmp;
 
-  it = g_list.begin(this);
-  while (it != NULL && it != position)
-    next(it);
+  for (it = g_list.begin(this); it != NULL && it != position; next(it))
+    ;
   if (it != position)
     return (NULL);
   tmp = it->forward;
@@ -215,40 +201,34 @@ static iterator		erase(list *this, iterator position)
   return (tmp);
 }
 
-static void		swap(list *this, list *x)
+static void swap(list *this, list *x)
 {
   SWAP_PTR(this->content, x->content);
   SWAP_NBR(this->size, x->size);
 }
 
-static void		resize(list *this, size_type n)
+static void resize(list *this, size_type n)
 {
-  size_type		i;
+  size_type i;
 
   if ((i = g_list.size(this)) == n)
     return ;
   else if (i < n)
   {
-    while (i < n)
-    {
+    for (; i < n; ++i)
       g_list.push_back(this, (void *)(&g_default_val));
-      ++i;
-    }
   }
   else
   {
-    while (i > n)
-    {
+    for (; i > n; --i)
       g_list.pop_back(this);
-      --i;
-    }
   }
 }
 
-static void		clear(list *this)
+static void clear(list *this)
 {
-  iterator		it;
-  iterator		forward;
+  iterator  it;
+  iterator  forward;
 
   if (g_list.size(this) == 0)
     return ;
@@ -267,16 +247,15 @@ static void		clear(list *this)
   }
 }
 
-static void		splice(list *this, iterator position, list *x)
+static void splice(list *this, iterator position, list *x)
 {
-  iterator		it;
-  iterator		tmp;
+  iterator  it;
+  iterator  tmp;
 
   if (x == NULL || x->content == NULL)
     return ;
-  it = g_list.begin(this);
-  while (it != NULL && it != position && it->forward != position)
-    next(it);
+  for (it = g_list.begin(this);
+       it != NULL && it != position && it->forward != position; next(it));
   if (it == NULL)
     return ;
   tmp = it->forward;
@@ -290,82 +269,55 @@ static void		splice(list *this, iterator position, list *x)
   x->content = NULL;
 }
 
-static void		remove(list *this, const value_type val)
+static void remove(list *this, const value_type val)
 {
-  iterator		it;
+  iterator  it;
 
-  it = g_list.begin(this);
-  while (it != NULL && it->value != val)
-    it = it->value;
+  for (it = g_list.begin(this); it != NULL && it->value != val; next(it))
+    ;
   if (it != NULL)
     g_list.erase(this, it);
 }
 
-static void		remove_if(list *this, Predicate pred)
+static void remove_if(list *this, Predicate pred)
 {
-  iterator		it;
-
-  it = g_list.begin(this);
-  while (it != NULL)
-  {
-    if (pred(it != NULL ? it->value : NULL))
+  for (iterator it = g_list.begin(this); it != NULL; next(it))
+    if (pred(it->value))
       g_list.erase(this, it);
-    next(it);
-  }
 }
 
-static void		unique(list *this, BinaryPredicate binary_pred)
+static void unique(list *this, BinaryPredicate binary_pred)
 {
-  iterator		it;
-  iterator		tmp;
-
-  it = g_list.begin(this);
-  while (it != NULL)
-  {
-    tmp = it->forward;
-    while (tmp != NULL)
+  for (iterator it = g_list.begin(this); it != NULL; next(it))
+    for (iterator tmp = it->forward; tmp != NULL; )
       tmp = binary_pred(it->value, tmp->value) ? erase(this, tmp) : tmp->forward;
-    next(it);
-  }
 }
 
-static void		merge(list *this, list *x, Compare comp)
+static void merge(list *this, list *x, Compare comp)
 {
   splice(this, begin(this), x);
   g_list.sort(this, comp);
 }
 
-static void		sort(list *this, Compare comp)
+static void sort(list *this, Compare comp)
 {
-  iterator		it;
-  iterator		tmp;
-
-  it = g_list.begin(this);
-  while (it != NULL)
-  {
-    tmp = it->forward;
-    while (tmp != NULL)
-    {
+  for (iterator it = g_list.begin(this); it != NULL; next(it))
+    for (iterator tmp = it->forward; tmp != NULL; next(tmp))
       if (comp(it->value, tmp->value))
-	SWAP_PTR(it->value, tmp->value);
-      next(tmp);
-    }
-    next(it);
-  }
+        SWAP_PTR(it->value, tmp->value);
 }
 
-static void		reverse(list *this)
+static void reverse(list *this)
 {
-  iterator		it1;
-  iterator		it2;
+  iterator  it1;
+  iterator  it2;
 
   it1 = begin(this);
   it2 = end(this);
   while (it1 != NULL && it2 != NULL)
   {
     SWAP_PTR(it1->value, it2->value);
-    if ((next(it1)) == it2 ||
-	(previous(it2)) == it1)
+    if ((next(it1)) == it2 || (previous(it2)) == it1)
       return ;
   }
 }

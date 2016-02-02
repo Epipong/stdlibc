@@ -12,13 +12,13 @@
 #include <stdio.h>
 #include "_string.h"
 
-static void		constructor(string *this)
+static void constructor(string *this)
 {
   if (this != NULL)
     memset(this, 0, sizeof(*this));
 }
 
-static void		destructor(string *this)
+static void destructor(string *this)
 {
   if (this != NULL)
   {
@@ -29,59 +29,58 @@ static void		destructor(string *this)
   }
 }
 
-static void		*begin(string *this)
+static void *begin(string *this)
 {
   return (this->str);
 }
 
-static void		*end(string *this)
+static void *end(string *this)
 {
   return (this->str != NULL ? this->str + strlen(this->str) : NULL);
 }
 
-static size_t		size(string *this)
+static size_t size(string *this)
 {
   return (this->str != NULL ? strlen(this->str) : 0);
 }
 
-static void		resize(string *this, size_t n)
+static void resize(string *this, size_t n)
 {
-  size_t		len;
+  size_t    len;
 
   if (n < (len = g_string.size(this)))
     this->str[n] = '\0';
-  this->size = 1;
-  while (this->size <= n)
-    this->size <<= 1;
+  for (this->size = 1; this->size <= n; this->size <<= 1)
+    ;
   if ((this->str = realloc(this->str, this->size)) == NULL)
     this->size = 0;
   else if (len == 0)
     memset(this->str, 0, this->size);
 }
 
-static size_t		capacity(string *this)
+static size_t capacity(string *this)
 {
   return (this->size);
 }
 
-static void		clear(string *this)
+static void clear(string *this)
 {
   if (this->str != NULL)
     memset(this->str, 0, this->size);
 }
 
-static bool		empty(string *this)
+static bool empty(string *this)
 {
   return (this->str == NULL || g_string.size(this));
 }
 
-static char		at(string *this, size_t pos)
+static char at(string *this, size_t pos)
 {
   return (this->str != NULL && pos < g_string.size(this) ?
-	  this->str[pos] : '\0');
+    this->str[pos] : '\0');
 }
 
-static char const	*append(string *this, char const *str)
+static char const *append(string *this, char const *str)
 {
   if (str == NULL)
     return (this->str);
@@ -90,13 +89,13 @@ static char const	*append(string *this, char const *str)
   return (this->str != NULL ? strcat(this->str, str) : NULL);
 }
 
-static void		push_back(string *this, char c)
+static void push_back(string *this, char c)
 {
   g_string.append(this, (char const []){c, '\0'});
 }
 
-static char const	*assign(string *this, char const *str,
-				__attribute__((unused))size_t n)
+static char const *assign(string *this, char const *str,
+                          __attribute__((unused))size_t n)
 {
   if (str == NULL)
     return (this->str);
@@ -104,9 +103,9 @@ static char const	*assign(string *this, char const *str,
   return (g_string.append(this, str));
 }
 
-static char const	*insert(string *this, size_t pos, char const *str)
+static char const *insert(string *this, size_t pos, char const *str)
 {
-  char			*tmp;
+  char            *tmp;
 
   if (str == NULL)
     return (this->str);
@@ -124,9 +123,9 @@ static char const	*insert(string *this, size_t pos, char const *str)
   return (NULL);
 }
 
-static char const	*erase(string *this, size_t pos, size_t len)
+static char const *erase(string *this, size_t pos, size_t len)
 {
-  size_t		size;
+  size_t          size;
 
   if (this->str == NULL || g_string.size(this) < pos)
     return (this->str != NULL ? this->str : NULL);
@@ -136,25 +135,25 @@ static char const	*erase(string *this, size_t pos, size_t len)
   return (strcat(this->str + pos, this->str + pos + len));
 }
 
-static char const	*replace(string *this, size_t pos, size_t len, char const *str)
+static char const *replace(string *this, size_t pos, size_t len, char const *str)
 {
   g_string.erase(this, pos, len);
   return (g_string.insert(this, pos, str));
 }
 
-static void		swap(string *this, string *str)
+static void swap(string *this, string *str)
 {
   SWAP_PTR(this->str, str->str);
 }
 
-static char const	*c_str(string *this)
+static char const *c_str(string *this)
 {
   return (this->str);
 }
 
-static size_t		copy(string *this, char* s, size_t len, size_t pos)
+static size_t copy(string *this, char* s, size_t len, size_t pos)
 {
-  size_t		size;
+  size_t      size;
 
   if (s == NULL || this->size < pos)
     return (NPOS);
@@ -164,9 +163,9 @@ static size_t		copy(string *this, char* s, size_t len, size_t pos)
   return (len);
 }
 
-static size_t		find(string *this, char const *str, size_t pos)
+static size_t find(string *this, char const *str, size_t pos)
 {
-  char			*tmp;
+  char        *tmp;
 
   if (g_string.size(this) < pos || str == NULL)
     return (NPOS);
@@ -175,19 +174,19 @@ static size_t		find(string *this, char const *str, size_t pos)
   return (NPOS);
 }
 
-static char const	*substr(string *this, size_t pos, size_t len)
+static char const *substr(string *this, size_t pos, size_t len)
 {
   if (g_string.size(this) < pos)
     return (NULL);
   return (strndup(this->str + pos, len));
 }
 
-static int		compare(string *this, char const *str)
+static int  compare(string *this, char const *str)
 {
   return (strcmp(this->str, str));
 }
 
-struct s_string_class	g_string = {
+struct s_string_class g_string = {
   &constructor,
   &destructor,
   &begin,
@@ -212,10 +211,10 @@ struct s_string_class	g_string = {
   &compare
 };
 
-string		*to_string(int val)
+string    *to_string(int val)
 {
-  char		buff[BUFFER_LENGTH + 1];
-  string	*str;
+  char    buff[BUFFER_LENGTH + 1];
+  string  *str;
 
   if ((str = calloc(sizeof(*str), 1)) == NULL)
     return (NULL);

@@ -11,9 +11,9 @@
 #include <string.h>
 #include "map.h"
 
-static void	*ptrdup(void *ptr, size_t size)
+static void *ptrdup(void *ptr, size_t size)
 {
-  void		*new;
+  void      *new;
 
   if ((new = calloc(size + 1, 1)) == NULL)
     return (NULL);
@@ -29,9 +29,9 @@ static void	*ptrdup(void *ptr, size_t size)
 **	k (key_type) -- Key comparison.
 **	comp (key_compare) -- Method comparison between key.
 */
-static node	_node_key_search(node tree, const key_type k, key_compare comp)
+static node _node_key_search(node tree, const key_type k, key_compare comp)
 {
-  int		n;
+  int       n;
 
   if (tree == NULL || tree->key == NULL)
     return (NULL);
@@ -52,9 +52,9 @@ static node	_node_key_search(node tree, const key_type k, key_compare comp)
 **	comp (value_compare) -- Method comparison between value.
 */
 static node	_node_value_search(node tree, const value_type v,
-				   value_compare comp)
+				                       value_compare comp)
 {
-  int		n;
+  int       n;
 
   if (tree == NULL || tree->content == NULL || tree->content->second)
     return (NULL);
@@ -74,10 +74,10 @@ static node	_node_value_search(node tree, const value_type v,
 **	k (key_type) -- Key comparison.
 **	comp (key_compare) -- Method comparison between key.
 */
-static node	_node_insert(node *tree, const key_type k, key_compare comp)
+static node _node_insert(node *tree, const key_type k, key_compare comp)
 {
-  node		tmp;
-  int		n;
+  node		  tmp;
+  int       n;
 
   tmp = NULL;
   if (*tree == NULL)
@@ -114,7 +114,7 @@ static void	_node_clear(node tree)
   }
 }
 
-static void		constructor(map *this)
+static void constructor(map *this)
 {
   if (this != NULL)
     memset(this, 0, sizeof(*this));
@@ -122,7 +122,7 @@ static void		constructor(map *this)
   this->v_comp = (key_compare)strcmp;
 }
 
-static void		destructor(map *this)
+static void destructor(map *this)
 {
   if (this == NULL)
     return ;
@@ -137,53 +137,46 @@ static void		destructor(map *this)
 
 static p_iterator	begin(map *this)
 {
-  p_iterator		it;
+  p_iterator      it;
 
-  it = this->content;
-  while (it != NULL && it->rewind != NULL)
-    previous(it);
+  for (it = this->content; it != NULL && it->rewind != NULL; previous(it))
+    ;
   return (it);
 }
 
 static p_iterator	end(map *this)
 {
-  p_iterator		it;
+  p_iterator      it;
 
-  it = this->content;
-  while (it != NULL && it->forward != NULL)
-    next(it);
+  for (it = this->content; it != NULL && it->forward != NULL; next(it))
+    ;
   return (it);
 }
 
-static bool		empty(map *this)
+static bool empty(map *this)
 {
   return (!this || !this->content ||
 	  !this->content->first || !this->content->second);
 }
 
-static size_type	size(map *this)
+static size_type  size(map *this)
 {
-  p_iterator		it;
-  size_type		n;
+  size_type       n;
 
-  it = g_map.begin(this);
   n = 0;
-  while (it != NULL)
-  {
-    ++n;
-    next(it);
-  }
+  for (p_iterator it = g_map.begin(this); it != NULL; next(it), ++n)
+    ;
   return (n);
 }
 
-static size_type	max_size(map *this)
+static size_type  max_size(map *this)
 {
   return ((size_type)this);
 }
 
-static void		*at(map *this, const key_type k)
+static void *at(map *this, const key_type k)
 {
-  node			tmp;
+  node      tmp;
 
   if ((tmp = _node_key_search(this->tree, k, this->k_comp)) != NULL &&
       tmp->content != NULL)
@@ -193,9 +186,9 @@ static void		*at(map *this, const key_type k)
 
 static p_iterator	insert(map *this, first_type first, second_type second)
 {
-  p_iterator		it;
-  p_iterator		end;
-  node			tmp;
+  p_iterator      it;
+  p_iterator      end;
+  node            tmp;
 
   if (g_map.count(this, first) == 1 ||
       (tmp = _node_insert(&this->tree, first, this->k_comp)) == NULL)
@@ -219,12 +212,12 @@ static p_iterator	insert(map *this, first_type first, second_type second)
   return ((tmp->content = g_map.end(this)));
 }
 
-static p_iterator	erase(map *this, p_iterator position)
+static p_iterator erase(map *this, p_iterator position)
 {
   return ((p_iterator)g_list.erase((list *)this, (iterator)position));
 }
 
-static void		swap(map *this, map *x)
+static void swap(map *this, map *x)
 {
   SWAP_PTR(this->content, x->content);
   SWAP_NBR(this->size, x->size);
@@ -233,33 +226,33 @@ static void		swap(map *this, map *x)
   SWAP_PTR(this->v_comp, x->v_comp);
 }
 
-static void		clear(map *this)
+static void clear(map *this)
 {
   _node_clear(this->tree);
   this->tree = NULL;
   g_list.clear((list *)this);
 }
 
-static key_compare	key_comp(map *this)
+static key_compare  key_comp(map *this)
 {
   return (this->k_comp);
 }
 
-static value_compare	value_comp(map *this)
+static value_compare  value_comp(map *this)
 {
   return (this->v_comp);
 }
 
 static p_iterator	find(map *this, const value_type v)
 {
-  node			tmp;
+  node            tmp;
 
   if ((tmp = _node_value_search(this->tree, v, this->v_comp)) != NULL)
     return (tmp->content);
   return (NULL);
 }
 
-static size_type	count(map *this, const value_type v)
+static size_type  count(map *this, const value_type v)
 {
   return (_node_value_search(this->tree, v, this->v_comp) != NULL ? 1 : 0);
 }
@@ -274,7 +267,7 @@ static p_iterator	upper_bound(__attribute__((unused))map *this, __attribute__((u
   return (NULL);
 }
 
-static void		*equal_range(__attribute__((unused))map *this, __attribute__((unused))const key_type k)
+static void *equal_range(__attribute__((unused))map *this, __attribute__((unused))const key_type k)
 {
   return (NULL);
 }

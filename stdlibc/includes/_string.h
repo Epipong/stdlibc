@@ -16,8 +16,8 @@
 
 # include "iterator.h"
 
-# define NPOS    (size_t)-1
-# define ALLOC_LENGTH  16
+# define NPOS           (size_t)-1
+# define ALLOC_LENGTH   16
 # define BUFFER_LENGTH  16
 
 # ifndef STRING_CLASS

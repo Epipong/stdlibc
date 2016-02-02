@@ -29,7 +29,7 @@ struct      s_list
   size_type size;
 };
 
-struct s_list_class
+struct      s_list_class
 {
   void      (*constructor)(list *this);
   void      (*destructor)(list *this);

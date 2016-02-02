@@ -24,10 +24,10 @@ typedef struct s_deque  deque;
 **  content (iterator) -- Data stored.
 **  size (size_type) -- Size.
 */
-struct    s_deque
+struct      s_deque
 {
   iterator  content;
-  size_type  size;
+  size_type size;
 };
 
 struct      s_deque_class
