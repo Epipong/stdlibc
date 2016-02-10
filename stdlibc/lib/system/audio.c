@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "system/audio.h"
 
 static void constructor(audio *this)
@@ -9,9 +8,8 @@ static void destructor(audio *this)
 {
 }
 
-static void update(audio *this, float datetime)
+static void update(audio *this, sfTime datetime, list objects)
 {
-  printf("audio update\n");
 }
 
 static void init(audio *this)

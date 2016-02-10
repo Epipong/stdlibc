@@ -8,7 +8,7 @@ static void destructor(ui *this)
 {
 }
 
-static void update(ui *this, float datetime)
+static void update(ui *this, sfTime datetime, list objects)
 {
 }
 

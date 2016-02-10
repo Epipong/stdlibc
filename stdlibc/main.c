@@ -33,7 +33,7 @@ static void test_vector()
   printf("making foo grow:\n");
   for (int i = 0; i < 100; ++i)
   {
-    push_back(foo, (int []){i});
+    push_back(foo, put(i, int));
     if (sz != capacity(foo))
     {
       sz = capacity(foo);
@@ -46,7 +46,7 @@ static void test_vector()
   printf("bar.content -> %p\n", bar.content);
   for (int i = 0; i < 100; ++i)
   {
-    push_back(bar, (int []){i});
+    push_back(bar, put(i, int));
     if (sz != capacity(bar))
     {
       sz = capacity(bar);
@@ -57,43 +57,8 @@ static void test_vector()
   destructor(bar);
 }
 
-int   sample()
+int test_math_vector()
 {
-  deque d;
-  map m;
-
-  constructor(d);
-  constructor(m);
-
-  insert(m, "deque", &d);  // insert deque into map.
-  insert(m, "int", put(9, int)); // insert int into map.
-  push_back(d, "42");  // push back 42 into deque.
-
-  printf("m['%s'].front() = %s\n", "deque", front(at(m, "deque", deque)));
-  printf("m['%s'] = %d\n", "int", at(m, "int", int));
-
-  push_back(d, "21");
-
-  foreach(row, d)
-  {
-    printf("row = %p\n",  row);
-    printf("row->value = %s\n", row->value);
-  }
-
-  destructor(d);
-  destructor(m);
-  return (0);
-}
-
-int test_sdl()
-{
-  // SDL s;
-  //
-  // constructor(s);
-  // create_window(s, "Epipong", v4(0, 0, 856, 480), SDL_WINDOW_SHOWN);
-  // get_window_surface(s);
-  // fill_rect(s, NULL, 0x0dc902);
-  // update_window_surface(s);
   vector3 m = v3(5, 3, 2);
   vector3 n = add(m, v3(9, 4, 2));
   printf("%s\n", to_string(m));
@@ -104,10 +69,6 @@ int test_sdl()
   printf("%s\n", to_string(m));
   m = xor(m, n);
   printf("%s\n", to_string(m));
-  // char c = 0;
-  // while (c != 'd')
-  //   read(0, &c, 1);
-  // destructor(s);
   return 0;
 }
 
@@ -116,16 +77,14 @@ int       test_engine()
   engine  e;
   audio   a;
   input   i;
+  graphic g;
 
   constructor(e);
-  constructor(a);
-  constructor(i);
   add_system(e, a);
   add_system(e, i);
-  update(e, 0);
+  add_system(e, g);
+  //loop(e);
   destructor(e);
-  destructor(a);
-  destructor(i);
   return 0;
 }
 
@@ -133,8 +92,7 @@ int		main(void)
 {
   //test_vector();
   return test_engine();
-  return test_sdl();
-  return sample();
+  //return test_math_vector();
   deque  l;
   vector v;
 

@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "system/input.h"
 
 static void constructor(input *this)
@@ -9,9 +8,8 @@ static void destructor(input *this)
 {
 }
 
-static void update(input *this, float datetime)
+static void update(input *this, sfTime datetime, list objects)
 {
-  printf("input update\n");
 }
 
 static void init(input *this)

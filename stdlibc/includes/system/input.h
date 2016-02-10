@@ -1,6 +1,8 @@
 #ifndef INPUT_H_
 # define INPUT_H_
 
+# include <SFML/System.h>
+
 # include "message/message.h"
 # include "std.h"
 
@@ -15,7 +17,7 @@ struct s_input_class
   void (*constructor)(input *this);
   void (*destructor)(input *this);
 
-  void (*update)(input *this, float datetime);
+  void (*update)(input *this, sfTime datetime, list objects);
   void (*init)(input *this);
   void (*send_message)(input *this, message *msg);
 };

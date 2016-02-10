@@ -1,6 +1,8 @@
 #ifndef AUDIO_H_
 # define AUDIO_H_
 
+# include <SFML/System.h>
+
 # include "message/message.h"
 # include "std.h"
 
@@ -15,7 +17,7 @@ struct  s_audio_class
   void  (*constructor)(audio *this);
   void  (*destructor)(audio *this);
 
-  void  (*update)(audio *this, float datetime);
+  void  (*update)(audio *this, sfTime datetime, list objects);
   void  (*init)(audio *this);
   void  (*send_message)(audio *this, message *msg);
 };

@@ -27,9 +27,13 @@ struct          s_sys
   void          *system;
 };
 
-typedef void (*t_update)(void *this, float datetime);
+typedef void (*t_ctor)(void *this);
+typedef void (*t_dtor)(void *this);
+typedef void (*t_update)(void *this, float datetime, list objects);
 
-extern t_update update_system[SYSTEM_LENGTH + 1];
+extern t_ctor constructor_system[SYSTEM_LENGTH];
+extern t_dtor destructor_system[SYSTEM_LENGTH];
+extern t_update update_system[SYSTEM_LENGTH];
 
 void          init_system(void);
 struct s_sys  _system(enum e_system type, void *system);

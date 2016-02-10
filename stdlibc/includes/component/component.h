@@ -9,10 +9,10 @@ struct    s_component
 {
 };
 
-struct s_component_class
+struct  s_component_class
 {
-  void (*constructor)(component *this);
-  void (*destructor)(component *this);
+  void  (*constructor)(component *this);
+  void  (*destructor)(component *this);
 };
 
 extern struct s_component_class g_component;

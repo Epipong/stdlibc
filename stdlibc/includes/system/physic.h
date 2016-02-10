@@ -1,6 +1,8 @@
 #ifndef PHYSIC_H_
 # define PHYSIC_H_
 
+# include <SFML/System.h>
+
 # include "message/message.h"
 # include "std.h"
 
@@ -15,7 +17,7 @@ struct s_physic_class
   void (*constructor)(physic *this);
   void (*destructor)(physic *this);
 
-  void (*update)(physic *this, float datetime);
+  void (*update)(physic *this, sfTime datetime, list objects);
   void (*init)(physic *this);
   void (*send_message)(physic *this, message *msg);
 };

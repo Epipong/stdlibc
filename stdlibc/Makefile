@@ -40,16 +40,24 @@ GENERATOR	=	ranlib
 
 COMPILER	=	clang
 
-CFLAGS		+= -Iincludes -std=c11
-CFLAGS		+= -D_BSD_SOURCE -D_GNU_SOURCE
+CFLAGS	+= -Iincludes -std=c11
+CFLAGS	+= -D_BSD_SOURCE -D_GNU_SOURCE
 
 RELEASE	= N
 DEBUG		=	N
 SDL			= N
+CSFML		= N
+
+
 
 ifeq ($(SDL), Y)
-LFLAGS	+= -L/usr/local/lib/ -lSDL2
+LFLAGS	+= -L/usr/local/lib -lSDL2
 CFLAGS	+= -I/usr/local/include/
+endif
+
+ifeq ($(CSFML), Y)
+LFLAGS	+= -LCSFML-2.3/lib -lcsfml-audio -lcsfml-graphics -lcsfml-network -lcsfml-system -lcsfml-window
+CFLAGS	+= -ICSFML-2.3/include
 endif
 
 ifeq ($(DEBUG), Y)

@@ -8,7 +8,7 @@ static void destructor(object_factory *this)
 {
 }
 
-static void update(object_factory *this, float datetime)
+static void update(object_factory *this, sfTime datetime, list objects)
 {
 }
 

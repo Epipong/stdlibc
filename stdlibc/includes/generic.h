@@ -265,9 +265,8 @@
 # define delay(x)                   g_sdl.delay(x)
 # define get_error(x)               g_sdl.get_error()
 
-# define update(x, y)                         \
+# define update(x, y, z)                      \
   _Generic((x),                               \
-    engine: g_engine.update,                  \
     audio: g_audio.update,                    \
     game_logic: g_game_logic.update,          \
     graphic: g_graphic.update,                \
@@ -275,9 +274,12 @@
     object_factory: g_object_factory.update,  \
     physic: g_physic.update,                  \
     ui: g_ui.update                           \
-  )(&x, y)
+  )(&x, y, z)
 
-# define add_system(x, y) g_engine.add_system(&x, sys(y))
+# define loop(x) \
+  _Generic((x), engine: g_engine.loop)(&x)
+
+# define add_system(x, y) g_engine.add_system(&x, sys(y), sizeof(y))
 # define sys(x) _system(sys_type(x), system)
 
 # define sys_type(x)                \

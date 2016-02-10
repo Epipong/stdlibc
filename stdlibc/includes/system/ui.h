@@ -1,6 +1,8 @@
 #ifndef UI_H_
 # define UI_H_
 
+# include <SFML/System.h>
+
 # include "message/message.h"
 # include "std.h"
 
@@ -15,7 +17,7 @@ struct s_ui_class
   void (*constructor)(ui *this);
   void (*destructor)(ui *this);
 
-  void (*update)(ui *this, float datetime);
+  void (*update)(ui *this, sfTime datetime, list objects);
   void (*init)(ui *this);
   void (*send_message)(ui *this, message *msg);
 };
