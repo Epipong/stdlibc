@@ -8,7 +8,7 @@ static void destructor(game_logic *this)
 {
 }
 
-static void update(game_logic *this, sfTime datetime, list objects)
+static void update(game_logic *this, sfTime datetime, list *objects)
 {
 }
 

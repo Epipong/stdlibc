@@ -8,7 +8,7 @@ static void destructor(physic *this)
 {
 }
 
-static void update(physic *this, sfTime datetime, list objects)
+static void update(physic *this, sfTime datetime, list *objects)
 {
 }
 

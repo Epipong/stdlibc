@@ -10,6 +10,7 @@ typedef struct s_object_factory object_factory;
 
 struct    s_object_factory
 {
+  list    objects;
 };
 
 struct s_object_factory_class
@@ -17,7 +18,7 @@ struct s_object_factory_class
   void (*constructor)(object_factory *this);
   void (*destructor)(object_factory *this);
 
-  void (*update)(object_factory *this, sfTime datetime, list objects);
+  void (*update)(object_factory *this, sfTime datetime, list *objects);
   void (*init)(object_factory *this);
   void (*send_message)(object_factory *this, message *msg);
 };

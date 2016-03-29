@@ -1,17 +1,22 @@
-#ifdef GENERIC
+#ifndef GENERIC_H_
+# define GENERIC_H_
 
+# include "component/component.h"
+
+# include "engine/engine.h"
+
+# include "game_object/game_object.h"
+# include "graphic/animation.h"
+# include "graphic/sprite.h"
+
+# include "manager/sprite.h"
+# include "manager/texture.h"
 # include "math/vector2.h"
 # include "math/vector3.h"
 # include "math/vector4.h"
-
-# include "sdl.h"
-# include "std.h"
-
-# include "component/component.h"
-# include "engine/engine.h"
-# include "game_object/game_object.h"
 # include "message/message.h"
 
+# include "std.h"
 # include "system/audio.h"
 # include "system/game_logic.h"
 # include "system/graphic.h"
@@ -28,25 +33,28 @@
 ** Generic common function.
 */
 
-# define constructor(x)                           \
-  _Generic((x),                                   \
-    string: STRING.constructor,                   \
-    list: LIST.constructor,                       \
-    deque: DEQUE.constructor,                     \
-    map: MAP.constructor,                         \
-    vector: VECTOR.constructor,                   \
-    SDL: g_sdl.constructor,                       \
-    component: g_component.constructor,           \
-    engine: g_engine.constructor,                 \
-    game_object: g_game_object.constructor,       \
-    message: g_message.constructor,               \
-    audio: g_audio.constructor,                   \
-    game_logic: g_game_logic.constructor,         \
-    graphic: g_graphic.constructor,               \
-    input: g_input.constructor,                   \
-    object_factory: g_object_factory.constructor, \
-    physic: g_physic.constructor,                 \
-    ui: g_ui.constructor                          \
+# define constructor(x)                             \
+  _Generic((x),                                     \
+    string: STRING.constructor,                     \
+    list: LIST.constructor,                         \
+    deque: DEQUE.constructor,                       \
+    map: MAP.constructor,                           \
+    vector: VECTOR.constructor,                     \
+    component: g_component.constructor,             \
+    engine: g_engine.constructor,                   \
+    game_object: g_game_object.constructor,         \
+    message: g_message.constructor,                 \
+    audio: g_audio.constructor,                     \
+    game_logic: g_game_logic.constructor,           \
+    graphic: g_graphic.constructor,                 \
+    input: g_input.constructor,                     \
+    object_factory: g_object_factory.constructor,   \
+    physic: g_physic.constructor,                   \
+    ui: g_ui.constructor,                           \
+    sprite_manager: g_sprite_manager.constructor,   \
+    texture_manager: g_texture_manager.constructor, \
+    animation: g_animation.constructor,             \
+    sprite_graphic: g_sprite_graphic.constructor    \
   )(&x)
 
 # define destructor(x)                            \
@@ -56,7 +64,6 @@
     deque: DEQUE.destructor,                      \
     map: MAP.destructor,                          \
     vector: VECTOR.destructor,                    \
-    SDL: g_sdl.destructor,                        \
     component: g_component.destructor,            \
     engine: g_engine.destructor,                  \
     game_object: g_game_object.destructor,        \
@@ -67,31 +74,40 @@
     input: g_input.destructor,                    \
     object_factory: g_object_factory.destructor,  \
     physic: g_physic.destructor,                  \
-    ui: g_ui.destructor                           \
+    ui: g_ui.destructor,                          \
+    sprite_manager: g_sprite_manager.destructor,  \
+    texture_manager: g_texture_manager.destructor,\
+    animation: g_animation.destructor,            \
+    sprite_graphic: g_sprite_graphic.destructor   \
   )(&x)
 
-# define new(x)                                       \
-  if (((x) = calloc(sizeof(*(x)), 1)))                \
-    _Generic((x),                                     \
-      string *: STRING.constructor,                   \
-      list *: LIST.constructor,                       \
-      deque *: DEQUE.constructor,                     \
-      map *: MAP.constructor,                         \
-      vector *: VECTOR.constructor,                   \
-      SDL *: g_sdl.constructor,                       \
-      component *: g_component.constructor,           \
-      engine *: g_engine.constructor,                 \
-      game_object *: g_game_object.constructor,       \
-      message *: g_message.constructor,               \
-      audio *: g_audio.constructor,                   \
-      game_logic *: g_game_logic.constructor,         \
-      graphic *: g_graphic.constructor,               \
-      input *: g_input.constructor,                   \
-      object_factory *: g_object_factory.constructor, \
-      physic *: g_physic.constructor,                 \
-      ui *: g_ui.constructor)(x);                     \
-  else                                                \
-    abort()
+# define new(x)                                         \
+  ({if (((x) = calloc(sizeof(*(x)), 1)))                  \
+    _Generic((x),                                       \
+      string *: STRING.constructor,                     \
+      list *: LIST.constructor,                         \
+      deque *: DEQUE.constructor,                       \
+      map *: MAP.constructor,                           \
+      vector *: VECTOR.constructor,                     \
+      component *: g_component.constructor,             \
+      engine *: g_engine.constructor,                   \
+      game_object *: g_game_object.constructor,         \
+      message *: g_message.constructor,                 \
+      audio *: g_audio.constructor,                     \
+      game_logic *: g_game_logic.constructor,           \
+      graphic *: g_graphic.constructor,                 \
+      input *: g_input.constructor,                     \
+      object_factory *: g_object_factory.constructor,   \
+      physic *: g_physic.constructor,                   \
+      ui *: g_ui.constructor,                           \
+      sprite_manager *: g_sprite_manager.constructor,   \
+      texture_manager *: g_texture_manager.constructor, \
+      animation *: g_animation.constructor,             \
+      sprite_graphic *: g_sprite_graphic.constructor    \
+    )(x);                                               \
+  else                                                  \
+    abort();                                            \
+  (x);})
 
 # define delete(x)                                  \
   _Generic((x),                                     \
@@ -100,7 +116,6 @@
     deque *: DEQUE.destructor,                      \
     map *: MAP.destructor,                          \
     vector *: VECTOR.destructor,                    \
-    SDL *: g_sdl.destructor,                        \
     component *: g_component.destructor,            \
     engine *: g_engine.destructor,                  \
     game_object *: g_game_object.destructor,        \
@@ -111,7 +126,12 @@
     input *: g_input.destructor,                    \
     object_factory *: g_object_factory.destructor,  \
     physic *: g_physic.destructor,                  \
-    ui *: g_ui.destructor)(x);                      \
+    ui *: g_ui.destructor,                          \
+    sprite_manager *: g_sprite_manager.destructor,  \
+    texture_manager *: g_texture_manager.destructor,\
+    animation *: g_animation.destructor,            \
+    sprite_graphic *: g_sprite_graphic.destructor   \
+  )(x);                                             \
   free((x))
 
 # define begin(x)         \
@@ -181,7 +201,7 @@
   )(&x)
 
 # define at(x, y, type)   \
-  *((type *)(_at(x, y)))
+  *((type*)(_at(x, y)))
 
 # define _at(x, y)        \
   _Generic((x),           \
@@ -255,15 +275,8 @@
   )(&x, y)
 
 /*
-** GUI generic function.
+** ECS Manager.
 */
-
-# define create_window(x, y, z, w)  g_sdl.create_window(&x, y, z, w)
-# define get_window_surface(x)      g_sdl.get_window_surface(&x)
-# define fill_rect(x, y, z)         g_sdl.fill_rect(&x, y, z)
-# define update_window_surface(x)   g_sdl.update_window_surface(&x)
-# define delay(x)                   g_sdl.delay(x)
-# define get_error(x)               g_sdl.get_error()
 
 # define update(x, y, z)                      \
   _Generic((x),                               \
@@ -369,4 +382,4 @@
     default: to_string      \
   )(x)
 
-#endif /* !GENERIC */
+#endif /* !GENERIC_H_ */

@@ -37,4 +37,6 @@ extern namespace  std;
 # define MAP    (*std.map)
 # define VECTOR (*std.vector)
 
+# define abs(x) ((x) < 0 ? -(x) : (x))
+
 #endif /* !STD_H_ */

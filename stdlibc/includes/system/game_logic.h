@@ -17,7 +17,7 @@ struct  s_game_logic_class
   void  (*constructor)(game_logic *this);
   void  (*destructor)(game_logic *this);
 
-  void  (*update)(game_logic *this, sfTime datetime, list objects);
+  void  (*update)(game_logic *this, sfTime datetime, list *objects);
   void  (*init)(game_logic *this);
   void  (*send_message)(game_logic *this, message *msg);
 };

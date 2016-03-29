@@ -5,6 +5,7 @@ typedef struct s_message  message;
 
 struct  s_message
 {
+  int   id;
 };
 
 struct  s_message_class

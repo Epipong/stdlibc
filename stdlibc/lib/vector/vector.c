@@ -52,7 +52,7 @@ static iterator end(vector *this)
   return (this->size > 0 ? this->content[this->size - 1] : NULL);
 }
 
-static size_type  size(vector *this)
+static size_type  size(vector const *this)
 {
   size_type       n;
 
@@ -106,12 +106,12 @@ static void reserve(vector *this, size_type n)
   _link(this);
 }
 
-static void *at(vector *this, size_type n)
+static void *at(vector const *this, size_type n)
 {
   iterator		*content;
 
   content = this->content;
-  return (content && content[n] ? content[n]->value : NULL);
+  return (n < size(this) && content && content[n] ? content[n]->value : NULL);
 }
 
 static void *front(vector *this)

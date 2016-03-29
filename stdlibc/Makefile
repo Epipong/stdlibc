@@ -8,16 +8,18 @@
 ## Last update Tue Aug  4 12:10:50 2015 davy
 ##
 
-SOURCES	= lib/std.c 										\
+SOURCES	= 															\
+					lib/std.c 										\
 					lib/string/string.c 					\
 					lib/list/list.c 							\
 					lib/deque/deque.c 						\
 					lib/vector/vector.c 					\
-					lib/sdl/sdl.c									\
 					lib/map/map.c									\
 					lib/math/vector2.c						\
 					lib/math/vector3.c						\
 					lib/math/vector4.c						\
+					lib/graphic/animation.c				\
+					lib/graphic/sprite.c					\
 					lib/component/component.c			\
 					lib/engine/engine.c						\
 					lib/game_object/game_object.c	\
@@ -29,7 +31,11 @@ SOURCES	= lib/std.c 										\
 					lib/system/object_factory.c		\
 					lib/system/physic.c						\
 					lib/system/system.c						\
-					lib/system/ui.c
+					lib/system/ui.c								\
+					lib/config/texture_filename.c	\
+					lib/manager/sprite.c					\
+					lib/manager/texture.c					\
+					lib/animation/sora.c
 
 OBJECTS		=	$(SOURCES:.c=.o)
 

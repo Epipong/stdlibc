@@ -8,7 +8,7 @@ static void destructor(audio *this)
 {
 }
 
-static void update(audio *this, sfTime datetime, list objects)
+static void update(audio *this, sfTime datetime, list *objects)
 {
 }
 

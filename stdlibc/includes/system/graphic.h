@@ -2,7 +2,6 @@
 # define GRAPHIC_H_
 
 # include <SFML/Graphics.h>
-# include <SFML/Window.h>
 # include <SFML/System.h>
 
 # include "message/message.h"
@@ -10,10 +9,8 @@
 
 typedef struct s_graphic graphic;
 
-struct            s_graphic
+struct  s_graphic
 {
-  sfVideoMode     video_mode;
-  sfRenderWindow  *render_window;
 };
 
 struct s_graphic_class
@@ -21,7 +18,7 @@ struct s_graphic_class
   void (*constructor)(graphic *this);
   void (*destructor)(graphic *this);
 
-  void (*update)(graphic *this, sfTime datetime, list objects);
+  void (*update)(graphic *this, sfTime datetime, list *objects);
   void (*init)(graphic *this);
   void (*send_message)(graphic *this, message *msg);
 };

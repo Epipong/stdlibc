@@ -1,35 +1,38 @@
-#define GENERIC
-
 #include "game_object/game_object.h"
-#include "generic.h"
 
-static void _constructor(game_object *this)
+static void constructor(game_object *this)
 {
+  g_vector.constructor(&this->components);
 }
 
-static void _destructor(game_object *this)
+static void destructor(game_object *this)
 {
+  g_vector.destructor(&this->components);
 }
 
-static component *_get_component(game_object *this, int id)
+static component  *get_component(game_object *this, int id)
 {
-  return (NULL);
+  iterator        it;
+
+  for (it = g_vector.begin(&this->components);
+       it != NULL && ((component *)it->value)->id != id; it = it->forward);
+  return (it != NULL ? it->value : NULL);
 }
 
-static void _add_component(game_object *this, component *comp)
+static void add_component(game_object *this, component *comp)
 {
-  push_back(this->components, comp);
+  g_vector.push_back(&this->components, comp);
 }
 
-static bool _has_component(game_object *this, int id)
+static bool has_component(game_object *this, int id)
 {
-  return (false);
+  return (get_component(this, id) != NULL);
 }
 
 struct s_game_object_class  g_game_object = {
-  &_constructor,
-  &_destructor,
-  &_get_component,
-  &_add_component,
-  &_has_component
+  &constructor,
+  &destructor,
+  &get_component,
+  &add_component,
+  &has_component
 };

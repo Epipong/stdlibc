@@ -6,9 +6,10 @@
 
 typedef struct s_game_object  game_object;
 
-struct    s_game_object
+struct      s_game_object
 {
-  vector  components;
+  unsigned  handle;
+  vector    components;
 };
 
 struct      s_game_object_class

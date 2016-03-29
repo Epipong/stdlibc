@@ -1,65 +1,72 @@
-#define GENERIC
-
 #include <SFML/System.h>
+#include <string.h>
 
 #include "engine/engine.h"
-#include "generic.h"
 
-static void _constructor(engine *this)
+static void constructor(engine *this)
 {
   if (this != NULL)
     memset(this, 0, sizeof(*this));
   for (size_t i = 0; i < SYSTEM_LENGTH; ++i)
-    constructor(this->systems[i]);
+    g_vector.constructor(&this->systems[i]);
   init_system();
 }
 
-static void     _destructor(engine *this)
+static void     destructor(engine *this)
 {
   struct s_sys  *sys;
+  iterator      it;
 
   for (size_t i = 0; i < SYSTEM_LENGTH; ++i)
   {
-    foreach (row, this->systems[i])
+    for (it = g_vector.begin(&this->systems[i]); it != NULL; it = it->forward)
     {
-      sys = row->value;
-      destructor_system[sys->type](sys->system);
-      free(sys->system);
-      free(row->value);
+      if ((sys = it->value) != NULL)
+      {
+        destructor_system[sys->type](sys->system);
+        free(sys->system);
+        free(sys);
+      }
     }
-    destructor(this->systems[i]);
+    g_vector.destructor(&this->systems[i]);
   }
 }
 
-static void     _update(engine *this, sfTime datetime)
+static void       update(engine *this, sfTime datetime)
 {
-  struct s_sys  *sys;
+  struct s_sys    *sys;
+  object_factory  *of;
+  list            *objects;
+  iterator        it;
 
+  of = g_vector.front(&this->systems[OBJECT_FACTORY]);
+  objects = of != NULL ? &of->objects : NULL;
   for (size_t i = 0; i < SYSTEM_LENGTH; ++i)
   {
-    foreach (row, this->systems[i])
+    for (it = g_vector.begin(&this->systems[i]); it != NULL; it = it->forward)
     {
-      sys = row->value;
-      update_system[sys->type](sys->system, 0, (list){0});
+      sys = it->value;
+      update_system[sys->type](sys->system, datetime, objects);
     }
   }
 }
 
-static void _loop(engine *this)
+static void loop(engine *this)
 {
   sfClock   *clock;
   sfTime    current_time;
 
   clock = sfClock_create();
   current_time = sfClock_restart(clock);
-  while (true)
+  while (g_is_run)
   {
-    _update(this, current_time);
+    update(this, current_time);
+    current_time = sfClock_restart(clock);
   }
   sfClock_destroy(clock);
 }
 
-static void     _add_system(engine *this, struct s_sys src, size_t n)
+static void     add_system(engine *this, struct s_sys src, size_t n)
 {
   struct s_sys  *dest;
   void          *s;
@@ -71,13 +78,13 @@ static void     _add_system(engine *this, struct s_sys src, size_t n)
   if ((dest = malloc(sizeof(*dest))) == NULL)
     exit(EXIT_FAILURE);
   memcpy(dest, &src, sizeof(*dest));
-  push_back(this->systems[src.type], dest);
+  g_vector.push_back(&this->systems[src.type], dest);
 }
 
 struct s_engine_class	g_engine = {
-  &_constructor,
-  &_destructor,
-  &_update,
-  &_loop,
-  &_add_system
+  &constructor,
+  &destructor,
+  &update,
+  &loop,
+  &add_system
 };

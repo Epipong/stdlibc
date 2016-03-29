@@ -19,44 +19,6 @@
 # include "math/vector3.h"
 # include "math/vector4.h"
 
-static int	intcmp(int *a, int *b) { return (*a - *b); }
-
-static void test_vector()
-{
-  size_type sz;
-  vector    foo;
-  vector    bar;
-
-  constructor(foo);
-  constructor(bar);
-  sz = capacity(foo);
-  printf("making foo grow:\n");
-  for (int i = 0; i < 100; ++i)
-  {
-    push_back(foo, put(i, int));
-    if (sz != capacity(foo))
-    {
-      sz = capacity(foo);
-      printf("capacity changed: %zu\n", sz);
-    }
-  }
-  printf("size: %lu\n", size(foo));
-  sz = capacity(bar);
-  printf("making bar grow:\n");
-  printf("bar.content -> %p\n", bar.content);
-  for (int i = 0; i < 100; ++i)
-  {
-    push_back(bar, put(i, int));
-    if (sz != capacity(bar))
-    {
-      sz = capacity(bar);
-      printf("capacity changed: %zu\n", sz);
-    }
-  }
-  destructor(foo);
-  destructor(bar);
-}
-
 int test_math_vector()
 {
   vector3 m = v3(5, 3, 2);
@@ -72,45 +34,26 @@ int test_math_vector()
   return 0;
 }
 
-int       test_engine()
+int               test_engine()
 {
-  engine  e;
-  audio   a;
-  input   i;
-  graphic g;
+  engine          e;
+  audio           a;
+  input           i;
+  graphic         g;
+  texture_manager tm;
 
   constructor(e);
+  constructor(tm);
   add_system(e, a);
   add_system(e, i);
   add_system(e, g);
-  //loop(e);
+  loop(e);
   destructor(e);
+  destructor(tm);
   return 0;
 }
 
 int		main(void)
 {
-  //test_vector();
   return test_engine();
-  //return test_math_vector();
-  deque  l;
-  vector v;
-
-  constructor(l);
-  constructor(v);
-  push_back(l, "toto");
-  push_back(l, "titi");
-  push_back(l, "tutu");
-  push_back(v, put(4, int));
-  push_back(v, put(67, int));
-  push_back(v, put(32, int));
-  foreach(row, l)
-    printf("%s\n", row->value);
-  foreach(row, v) // through vector as an iterator
-    printf("%d\n", get(row, int));
-  for (int i = size(v) - 1; i != -1; --i) // through vector as an array
-    printf("%d\n", get(v.content[i], int));
-  destructor(l);
-  destructor(v);
-  return 0;
 }

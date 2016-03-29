@@ -52,3 +52,5 @@ struct s_sys    _system(enum e_system type, void *system)
   };
   return (s);
 }
+
+bool g_is_run = true;

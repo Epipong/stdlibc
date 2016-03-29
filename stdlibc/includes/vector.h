@@ -31,14 +31,14 @@ struct      s_vector_class
   iterator  (*begin)(vector *this);
   iterator  (*end)(vector *this);
 
-  size_type (*size)(vector *this);
+  size_type (*size)(vector const *this);
   size_type (*max_size)(vector *this);
   void      (*resize)(vector *this, size_type n);
   size_t    (*capacity)(vector *this);
   bool      (*empty)(vector *this);
   void      (*reserve)(vector *this, size_type n);
 
-  void      *(*at)(vector *this, size_type n);
+  void      *(*at)(vector const *this, size_type n);
   void      *(*front)(vector *this);
   void      *(*back)(vector *this);
 
